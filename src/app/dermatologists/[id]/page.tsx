@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ChevronLeft, Star, Clock, Award, Shield, FileText, CalendarPlus } from "lucide-react";
 import { doctors } from "@/lib/data";
 
-export default function DermatologistProfile({ params }: { params: { id: string } }) {
-  const doctor = doctors.find(d => d.id === params.id) || doctors[0];
+export default async function DermatologistProfile({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const doctor = doctors.find(d => d.id === id) || doctors[0];
 
   return (
     <div className="min-h-screen bg-background pb-32">

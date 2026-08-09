@@ -73,7 +73,7 @@ export default function StackedCards() {
   };
 
   return (
-    <div className="relative w-full h-[190px] px-5 mt-6 mb-8 mx-auto max-w-[500px]">
+    <div className="relative w-full h-[190px] px-3 mt-6 mb-8 mx-auto max-w-[500px]">
       {cards.length === 0 && (
         <div className="absolute inset-0 mx-5 flex flex-col items-center justify-center text-center bg-card rounded-3xl border border-border border-dashed p-6">
           <p className="text-muted-foreground font-medium mb-4">No more upcoming appointments.</p>
@@ -90,9 +90,9 @@ export default function StackedCards() {
         {cards.map((card, index) => {
           // Subtle stack depth
           const isTop = index === 0;
-          const yOffset = index * 12; // Much smaller vertical offset
-          const scale = 1 - index * 0.025; // Gradual scaling (0.975, 0.95)
-          const opacity = 1 - index * 0.08; // Gradual opacity (0.92, 0.84)
+          const yOffset = index * 6; // Very small vertical offset
+          const scale = 1 - index * 0.04; // Steeper scaling so edges don't stick out horizontally as much
+          const opacity = 1 - index * 0.2; // Quicker opacity fade
           const zIndex = 10 - index;
           
           // Only show top 4 cards
@@ -101,7 +101,7 @@ export default function StackedCards() {
           return (
             <motion.div
               key={card.id}
-              className="absolute left-5 right-5 origin-top"
+              className="absolute left-3 right-3 origin-top rounded-[1.8rem]" // Added rounded to fix rectangular shadow
               style={{ zIndex }}
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={{ 
@@ -109,8 +109,8 @@ export default function StackedCards() {
                 y: yOffset, 
                 scale: scale,
                 boxShadow: isTop 
-                  ? "0 15px 35px -15px rgba(0,0,0,0.12), 0 5px 15px -5px rgba(0,0,0,0.04)" 
-                  : "0 8px 20px -10px rgba(0,0,0,0.05)"
+                  ? "0 10px 30px -10px rgba(0,0,0,0.1), 0 5px 15px -5px rgba(0,0,0,0.03)" 
+                  : "0 4px 12px -8px rgba(0,0,0,0.05)"
               }}
               exit={{ 
                 opacity: 0, 

@@ -3,8 +3,9 @@ import { ChevronLeft } from "lucide-react";
 import * as Icons from "lucide-react";
 import { categories, blogs } from "@/lib/data";
 
-export default function CategoryDetailPage({ params }: { params: { id: string } }) {
-  const category = categories.find(c => c.id === params.id) || categories[0];
+export default async function CategoryDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const category = categories.find(c => c.id === id) || categories[0];
   const relatedBlogs = blogs.filter(b => b.categoryId === category.id);
   const Icon = (Icons as any)[category.icon];
 

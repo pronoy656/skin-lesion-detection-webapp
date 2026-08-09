@@ -3,8 +3,9 @@ import { ChevronLeft, Clock, Calendar as CalendarIcon, User, Share2 } from "luci
 import * as Icons from "lucide-react";
 import { blogs, categories } from "@/lib/data";
 
-export default function BlogArticlePage({ params }: { params: { id: string } }) {
-  const article = blogs.find(b => b.id === params.id) || blogs[0];
+export default async function BlogArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = blogs.find(b => b.id === id) || blogs[0];
   const category = categories.find(c => c.id === article.categoryId) || categories[0];
   const relatedArticles = blogs.filter(b => b.categoryId === category.id && b.id !== article.id).slice(0, 3);
   
