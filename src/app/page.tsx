@@ -2,6 +2,7 @@
 
 import { useState, useRef, Suspense } from "react";
 import { Upload, Camera, Activity, AlertCircle, RotateCcw, Share2, Save, X, Search, Bell, Calendar, MoreVertical, HeartPulse, Brain, Zap, Syringe, Star } from "lucide-react";
+import StackedCards from "@/components/StackedCards";
 import { useUI } from "@/context/UIContext";
 import Image from "next/image";
 
@@ -46,75 +47,8 @@ function MobileAppContent() {
           <button className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">History</button>
         </div>
         
-        {/* Scrollable Banner Container */}
-        <div className="flex gap-4 overflow-x-auto pb-6 pt-2 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-          
-          {/* Stacked Card 1 */}
-          <div className="relative w-full min-w-[320px] max-w-[340px] shrink-0 snap-center" onClick={() => setUploadModalOpen(true)}>
-            {/* Stacked background layers */}
-            <div className="absolute -bottom-3 left-6 right-6 h-10 bg-blue-300 dark:bg-blue-900 rounded-3xl opacity-60"></div>
-            <div className="absolute -bottom-1.5 left-3 right-3 h-10 bg-blue-400 dark:bg-blue-800 rounded-3xl opacity-80"></div>
-            
-            {/* Main Card */}
-            <div className="relative bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-[2rem] overflow-hidden shadow-sm cursor-pointer active:scale-[0.98] transition-transform">
-              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
-              <div className="absolute right-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
-              
-              <div className="relative z-10 w-2/3">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-xl font-bold">Instant Scan</h3>
-                  <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                <p className="text-blue-100 text-sm font-medium mb-6">Detect lesions instantly</p>
-                
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                  <Camera size={14} className="text-white" />
-                  <span className="text-xs font-semibold">Scan Now</span>
-                </div>
-              </div>
-              
-              {/* Doctor Image Overlay (Transparent PNG) */}
-              <div className="absolute bottom-0 right-0 w-36 h-[115%] pointer-events-none">
-                <img 
-                  src="https://www.freepnglogos.com/uploads/doctor-png/png-woman-doctor-transparent-woman-doctor-images-40.png" 
-                  alt="Doctor" 
-                  className="w-full h-full object-contain object-bottom drop-shadow-lg"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Stacked Card 2 */}
-          <div className="relative w-full min-w-[320px] max-w-[340px] shrink-0 snap-center pr-4">
-            {/* Stacked background layers */}
-            <div className="absolute -bottom-3 left-6 right-10 h-10 bg-purple-300 dark:bg-purple-900 rounded-3xl opacity-60"></div>
-            <div className="absolute -bottom-1.5 left-3 right-7 h-10 bg-purple-400 dark:bg-purple-800 rounded-3xl opacity-80"></div>
-            
-            {/* Main Card */}
-            <div className="relative bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-[2rem] overflow-hidden shadow-sm cursor-pointer active:scale-[0.98] transition-transform mr-4">
-              <div className="absolute -left-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
-              <div className="absolute left-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
-              
-              <div className="relative z-10 w-full flex flex-col items-end text-right">
-                <div className="flex items-center gap-2 mb-1 justify-end">
-                  <h3 className="text-xl font-bold">Consult Info</h3>
-                  <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                  </div>
-                </div>
-                <p className="text-purple-100 text-sm font-medium mb-6">Talk to a specialist</p>
-                
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                  <Share2 size={14} className="text-white" />
-                  <span className="text-xs font-semibold">Book Now</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
+        {/* Vertical Stacked Doctor Cards Component */}
+        <StackedCards />
       </section>
 
       {/* CATEGORIES SECTION */}
