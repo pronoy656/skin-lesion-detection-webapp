@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useRef, Suspense } from "react";
-import { Upload, Camera, Activity, AlertCircle, RotateCcw, Share2, Save, X, Search, Bell, Calendar, MoreVertical, HeartPulse, Brain, Zap, Syringe, Star } from "lucide-react";
+import * as Icons from "lucide-react";
 import StackedCards from "@/components/StackedCards";
 import { useUI } from "@/context/UIContext";
 import Image from "next/image";
+import Link from "next/link";
+import { categories, doctors, blogs } from "@/lib/data";
 
 type AppState = "idle" | "preview" | "processing" | "result" | "error";
 
@@ -31,10 +33,10 @@ function MobileAppContent() {
         </div>
         <div className="flex items-center gap-4">
           <button className="text-gray-900 dark:text-foreground active:scale-90 transition-transform">
-            <Search size={24} strokeWidth={1.5} />
+            <Icons.Search size={24} strokeWidth={1.5} />
           </button>
           <button className="relative text-gray-900 dark:text-foreground active:scale-90 transition-transform">
-            <Bell size={24} strokeWidth={1.5} />
+            <Icons.Bell size={24} strokeWidth={1.5} />
             <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-background rounded-full"></span>
           </button>
         </div>
@@ -55,25 +57,23 @@ function MobileAppContent() {
       <section className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900 dark:text-foreground">Categories</h2>
-          <button className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</button>
+          <Link href="/categories" className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</Link>
         </div>
         
-        <div className="flex justify-between items-start">
-          {[
-            { name: "Mole Check", icon: Search, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20" },
-            { name: "Rash Check", icon: Activity, color: "text-red-500", bg: "bg-red-50 dark:bg-red-900/20" },
-            { name: "Full Body", icon: Zap, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-900/20" },
-            { name: "Consult", icon: Share2, color: "text-green-500", bg: "bg-green-50 dark:bg-green-900/20" }
-          ].map((cat, i) => (
-            <button key={i} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
-              <div className="w-[70px] h-[70px] bg-card rounded-2xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.04)] border border-border/40">
-                <div className={cat.color}>
-                  <cat.icon size={30} strokeWidth={1.5} />
+        <div className="flex gap-6 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pr-6">
+          {categories.map((cat) => {
+            const Icon = (Icons as any)[cat.icon];
+            return (
+              <Link key={cat.id} href={`/categories/${cat.id}`} className="flex flex-col items-center gap-2 active:scale-95 transition-transform shrink-0 snap-start">
+                <div className="w-[75px] h-[75px] bg-card rounded-2xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.04)] border border-border/40">
+                  <div className={cat.color.split(' ')[0] + " " + cat.color.split(' ')[1]}>
+                    <Icon size={32} strokeWidth={1.5} />
+                  </div>
                 </div>
-              </div>
-              <span className="text-[10px] font-bold text-gray-800 dark:text-gray-300">{cat.name}</span>
-            </button>
-          ))}
+                <span className="text-xs font-bold text-gray-800 dark:text-gray-300 whitespace-nowrap">{cat.title}</span>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
@@ -81,29 +81,12 @@ function MobileAppContent() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900 dark:text-foreground">Top Dermatologists</h2>
-          <button className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</button>
+          <Link href="/dermatologists" className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</Link>
         </div>
         
         <div className="flex flex-col gap-4">
-          {[
-            {
-              name: "Dr. Shakib Khan",
-              specialty: "Dermatologist",
-              hospital: "Asian Hospital",
-              rating: 5,
-              reviews: "365",
-              image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-            },
-            {
-              name: "Dr. Adrian Segara",
-              specialty: "Skin Specialist",
-              hospital: "Apollo Hospital",
-              rating: 5,
-              reviews: "147",
-              image: "https://images.unsplash.com/photo-1594824436951-7f1262d14bc8?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-            }
-          ].map((doc, i) => (
-            <div key={i} className="bg-card p-3 rounded-3xl flex items-center gap-4 shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 relative">
+          {doctors.slice(0, 2).map((doc) => (
+            <Link key={doc.id} href={`/dermatologists/${doc.id}`} className="bg-card p-3 rounded-3xl flex items-center gap-4 shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 relative active:scale-[0.98] transition-transform">
               <div className="w-[85px] h-[85px] shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded-2xl overflow-hidden relative">
                 <img src={doc.image} alt={doc.name} className="w-full h-full object-cover object-top" />
               </div>
@@ -112,15 +95,15 @@ function MobileAppContent() {
                 <p className="text-xs text-gray-500 font-medium mb-2">{doc.specialty} • {doc.hospital}</p>
                 <div className="flex items-center gap-1">
                   {[...Array(doc.rating)].map((_, j) => (
-                    <Star key={j} size={12} className="text-amber-400 fill-amber-400" />
+                    <Icons.Star key={j} size={12} className="text-amber-400 fill-amber-400" />
                   ))}
                   <span className="text-[10px] text-gray-400 font-semibold ml-1">({doc.reviews})</span>
                 </div>
               </div>
               <button className="absolute top-4 right-4 text-gray-400 active:text-gray-700 p-1">
-                <MoreVertical size={18} />
+                <Icons.MoreVertical size={18} />
               </button>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -144,31 +127,23 @@ function MobileAppContent() {
       <section className="mt-8 mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900 dark:text-foreground">Skin Care Tips</h2>
-          <button className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</button>
+          <Link href="/blog" className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">See All</Link>
         </div>
         
-        <div className="flex gap-4 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-          {[
-            {
-              title: "How to identify early signs of melanoma at home",
-              readTime: "5 min read",
-              image: "https://images.unsplash.com/photo-1576426863848-c21f53c60b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-            },
-            {
-              title: "The absolute best sunscreen for sensitive skin",
-              readTime: "3 min read",
-              image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-            }
-          ].map((tip, i) => (
-            <div key={i} className="min-w-[240px] bg-card rounded-3xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 snap-start active:scale-[0.98] transition-transform cursor-pointer">
+        <div className="flex gap-4 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] pr-6">
+          {blogs.slice(0, 3).map((tip) => (
+            <Link key={tip.id} href={`/blog/${tip.id}`} className="min-w-[240px] max-w-[240px] bg-card rounded-3xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 snap-start active:scale-[0.98] transition-transform flex flex-col">
               <div className="h-32 w-full bg-muted relative">
                 <img src={tip.image} alt="Tip" className="w-full h-full object-cover" />
               </div>
-              <div className="p-4">
+              <div className="p-4 flex flex-col flex-1">
                 <h3 className="font-bold text-sm text-gray-900 dark:text-foreground mb-2 line-clamp-2 leading-snug">{tip.title}</h3>
-                <p className="text-xs text-blue-500 font-bold">{tip.readTime}</p>
+                <div className="mt-auto flex justify-between items-center text-xs">
+                  <span className="text-blue-500 font-bold">{tip.readTime}</span>
+                  <span className="text-muted-foreground">{tip.date.split(',')[0]}</span>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -271,12 +246,12 @@ function AppFlow() {
           />
           
           <div className="relative flex gap-8 z-10">
-             <button 
+              <button 
                 onClick={() => { setUploadModalOpen(false); handleCameraClick(); }}
                 className="flex flex-col items-center gap-3 group animate-in slide-in-from-bottom-12 fade-in duration-300"
               >
                 <div className="w-16 h-16 bg-white dark:bg-card text-blue-500 rounded-full flex items-center justify-center shadow-xl group-active:scale-90 transition-transform">
-                  <Camera size={28} />
+                  <Icons.Camera size={28} />
                 </div>
                 <span className="text-sm font-bold text-white drop-shadow-md">Take Photo</span>
               </button>
@@ -286,7 +261,7 @@ function AppFlow() {
                 className="flex flex-col items-center gap-3 group animate-in slide-in-from-bottom-16 fade-in duration-500"
               >
                 <div className="w-16 h-16 bg-white dark:bg-card text-blue-500 rounded-full flex items-center justify-center shadow-xl group-active:scale-90 transition-transform">
-                  <Upload size={28} />
+                  <Icons.Upload size={28} />
                 </div>
                 <span className="text-sm font-bold text-white drop-shadow-md">Upload Image</span>
               </button>
@@ -297,7 +272,7 @@ function AppFlow() {
             onClick={() => setUploadModalOpen(false)}
             className="relative z-10 mt-10 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform animate-in fade-in duration-500 delay-100"
           >
-            <X size={24} />
+            <Icons.X size={24} />
           </button>
         </div>
       )}
@@ -308,7 +283,7 @@ function AppFlow() {
           {appState === "error" && (
             <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
               <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mb-6 shadow-sm border border-red-200">
-                <AlertCircle size={40} />
+                <Icons.AlertCircle size={40} />
               </div>
               <h2 className="text-2xl font-bold mb-3">Issue with Image</h2>
               <p className="text-muted-foreground mb-8 text-lg max-w-sm">{errorMessage}</p>
@@ -339,7 +314,7 @@ function AppFlow() {
                      onClick={handleUploadClick}
                      className="bg-black/60 backdrop-blur-md text-white text-sm font-semibold px-6 py-3 rounded-full flex items-center gap-2 hover:bg-black/80 transition-colors"
                    >
-                     <RotateCcw size={16} /> Change Image
+                     <Icons.RotateCcw size={16} /> Change Image
                    </button>
                  </div>
                </div>
@@ -347,7 +322,7 @@ function AppFlow() {
                  onClick={handleAnalyze}
                  className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-5 rounded-2xl font-bold text-lg shadow-[0_8px_20px_rgba(59,130,246,0.4)] flex items-center justify-center gap-3 active:scale-95 transition-transform"
                >
-                 <Activity size={24} /> Analyze Image
+                 <Icons.Activity size={24} /> Analyze Image
                </button>
              </div>
            </div>
@@ -366,7 +341,7 @@ function AppFlow() {
               </div>
               <div className="flex flex-col items-center text-center max-w-sm">
                 <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-500 rounded-full flex items-center justify-center mb-6 shadow-inner animate-bounce">
-                  <Activity size={32} />
+                  <Icons.Activity size={32} />
                 </div>
                 <h2 className="text-3xl font-extrabold mb-3 text-foreground">Analyzing...</h2>
                 <p className="text-muted-foreground text-lg">Scanning patterns.</p>
@@ -383,7 +358,7 @@ function AppFlow() {
               <header className="p-4 flex items-center justify-between border-b border-border bg-card sticky top-0 z-10">
                 <h1 className="text-xl font-bold">Analysis Result</h1>
                 <button onClick={resetFlow} className="w-10 h-10 flex items-center justify-center bg-muted text-foreground hover:bg-muted/80 rounded-full transition-colors">
-                  <X size={20} />
+                  <Icons.X size={20} />
                 </button>
               </header>
 
@@ -405,12 +380,12 @@ function AppFlow() {
                   <div className="bg-card rounded-3xl p-6 border border-border shadow-md">
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-14 h-14 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-500 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-red-100 dark:border-red-900/50">
-                        <AlertCircle size={28} />
+                        <Icons.AlertCircle size={28} />
                       </div>
                       <div>
                         <h2 className="text-2xl font-bold text-foreground">Melanoma</h2>
                         <div className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-full mt-2 border border-red-100 dark:border-red-900/50">
-                          <Activity size={16} />
+                          <Icons.Activity size={16} />
                           <span className="text-sm font-bold">High Risk (94% Match)</span>
                         </div>
                       </div>
@@ -426,7 +401,7 @@ function AppFlow() {
                     
                     <div className="mt-4 pt-4 border-t border-border">
                       <p className="text-xs text-red-500 font-bold flex items-center gap-2">
-                        <AlertCircle size={14} /> This is an AI assessment, not a medical diagnosis.
+                        <Icons.AlertCircle size={14} /> This is an AI assessment, not a medical diagnosis.
                       </p>
                     </div>
                   </div>
@@ -439,14 +414,14 @@ function AppFlow() {
                     disabled={isSaving}
                     className="flex items-center justify-center gap-2 bg-card border border-border hover:bg-muted py-4 rounded-2xl font-bold text-base transition-colors shadow-sm text-gray-900 dark:text-foreground disabled:opacity-70"
                   >
-                    {isSaving ? <Activity className="animate-spin" size={20} /> : <Save size={20} />} 
+                    {isSaving ? <Icons.Activity className="animate-spin" size={20} /> : <Icons.Save size={20} />} 
                     {isSaving ? "Saving..." : "Save PDF"}
                   </button>
                   <button className="flex items-center justify-center gap-2 bg-card border border-border hover:bg-muted py-4 rounded-2xl font-bold text-base transition-colors shadow-sm text-gray-900 dark:text-foreground">
-                    <Share2 size={20} /> Share
+                    <Icons.Share2 size={20} /> Share
                   </button>
                   <button className="col-span-2 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-5 rounded-2xl font-bold text-lg shadow-[0_4px_16px_rgba(59,130,246,0.3)] active:scale-95 transition-transform" onClick={resetFlow}>
-                    <RotateCcw size={20} /> Scan Another
+                    <Icons.RotateCcw size={20} /> Scan Another
                   </button>
                 </div>
               </div>
@@ -460,7 +435,7 @@ function AppFlow() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Activity className="animate-spin text-indigo-500" size={40}/></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Icons.Activity className="animate-spin text-indigo-500" size={40}/></div>}>
       <MobileAppContent />
     </Suspense>
   );
