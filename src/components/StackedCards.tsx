@@ -73,9 +73,9 @@ export default function StackedCards() {
   };
 
   return (
-    <div className="relative w-full h-[280px] flex justify-center mt-4 mb-8">
+    <div className="relative w-full h-[190px] px-5 mt-6 mb-8 mx-auto max-w-[500px]">
       {cards.length === 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-card rounded-[2rem] border border-border border-dashed p-6">
+        <div className="absolute inset-0 mx-5 flex flex-col items-center justify-center text-center bg-card rounded-3xl border border-border border-dashed p-6">
           <p className="text-muted-foreground font-medium mb-4">No more upcoming appointments.</p>
           <button 
             onClick={handleReset}
@@ -88,93 +88,92 @@ export default function StackedCards() {
 
       <AnimatePresence>
         {cards.map((card, index) => {
-          // Calculate dynamic styles based on position in stack
+          // Subtle stack depth
           const isTop = index === 0;
-          const yOffset = index * 24; 
-          const scale = 1 - index * 0.06;
-          const opacity = 1 - index * 0.25;
+          const yOffset = index * 12; // Much smaller vertical offset
+          const scale = 1 - index * 0.025; // Gradual scaling (0.975, 0.95)
+          const opacity = 1 - index * 0.08; // Gradual opacity (0.92, 0.84)
           const zIndex = 10 - index;
-          const blur = index > 0 ? `blur(${index * 1}px)` : "blur(0px)";
-
-          // Only render top 4 cards for performance & visual clarity
+          
+          // Only show top 4 cards
           if (index > 3) return null;
 
           return (
             <motion.div
               key={card.id}
-              className="absolute w-full max-w-[340px]"
+              className="absolute left-5 right-5 origin-top"
               style={{ zIndex }}
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={{ 
                 opacity: opacity > 0 ? opacity : 0, 
                 y: yOffset, 
                 scale: scale,
-                filter: blur,
                 boxShadow: isTop 
-                  ? "0 20px 40px -10px rgba(0,0,0,0.2)" 
-                  : "0 10px 20px -5px rgba(0,0,0,0.1)"
+                  ? "0 15px 35px -15px rgba(0,0,0,0.12), 0 5px 15px -5px rgba(0,0,0,0.04)" 
+                  : "0 8px 20px -10px rgba(0,0,0,0.05)"
               }}
               exit={{ 
                 opacity: 0, 
-                y: -300, 
-                scale: 0.9, 
+                y: -150, 
+                scale: 0.95, 
                 transition: { duration: 0.25, ease: "easeOut" } 
               }}
               transition={{ 
                 type: "spring", 
-                stiffness: 300, 
-                damping: 25, 
-                mass: 1 
+                stiffness: 400, 
+                damping: 30, 
+                mass: 0.8 
               }}
               drag={isTop ? "y" : false}
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.8}
               onDragEnd={isTop ? handleDragEnd : undefined}
             >
-              <div className={`relative bg-gradient-to-br ${card.color} text-white p-6 rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing`}>
-                <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
-                <div className="absolute right-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
+              <div className={`relative bg-gradient-to-br ${card.color} text-white p-5 rounded-[1.8rem] overflow-hidden cursor-grab active:cursor-grabbing w-full`}>
+                {/* Background Decor */}
+                <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
+                <div className="absolute right-12 -bottom-12 w-24 h-24 rounded-full border-[10px] border-white/10"></div>
                 
-                <div className="relative z-10 w-2/3 min-h-[160px] flex flex-col justify-between">
+                <div className="relative z-10 w-[65%] min-h-[110px] flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-xl font-bold">{card.name}</h3>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <h3 className="text-lg font-bold leading-tight">{card.name}</h3>
                       {isTop && (
-                        <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
-                          <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                        <div className="w-3.5 h-3.5 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm shrink-0">
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
                         </div>
                       )}
                     </div>
-                    <p className="text-white/80 text-sm font-medium mb-6">{card.role}</p>
+                    <p className="text-white/80 text-xs font-medium mb-4">{card.role}</p>
                   </div>
                   
                   <div>
-                    <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-sm">
-                      <Calendar size={14} className="text-white" />
-                      <span className="text-xs font-semibold">{card.date}</span>
+                    <div className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 shadow-sm">
+                      <Calendar size={12} className="text-white" />
+                      <span className="text-[10px] font-semibold">{card.date}</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Doctor Image Overlay */}
-                <div className="absolute bottom-0 right-0 w-40 h-[115%] pointer-events-none">
+                <div className="absolute bottom-0 right-0 w-[35%] max-w-[120px] h-[125%] pointer-events-none">
                   <img 
                     src={card.image} 
                     alt={card.name} 
-                    className="w-full h-full object-contain object-bottom drop-shadow-2xl"
+                    className="w-full h-full object-contain object-bottom drop-shadow-xl"
                     draggable="false"
                   />
                 </div>
 
-                {/* Swipe Hint Indicator on Active Card */}
+                {/* Subtle Swipe Hint Indicator */}
                 {isTop && (
-                  <div className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none">
+                  <div className="absolute bottom-1.5 left-0 right-0 flex justify-center pointer-events-none">
                     <motion.div
-                      animate={{ y: [0, -8, 0], opacity: [0.3, 1, 0.3] }}
-                      transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                      className="bg-black/20 backdrop-blur-sm rounded-full p-1"
+                      animate={{ y: [0, -4, 0], opacity: [0.2, 0.6, 0.2] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                      className="bg-black/10 backdrop-blur-sm rounded-full p-0.5"
                     >
-                      <ChevronUp size={20} className="text-white" />
+                      <ChevronUp size={14} className="text-white/80" />
                     </motion.div>
                   </div>
                 )}
