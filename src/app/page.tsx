@@ -64,13 +64,11 @@ function MobileAppContent() {
           {categories.map((cat) => {
             const Icon = (Icons as any)[cat.icon];
             return (
-              <Link key={cat.id} href={`/categories/${cat.id}`} className="flex flex-col items-center gap-2 active:scale-95 transition-transform shrink-0 snap-start">
-                <div className="w-[75px] h-[75px] bg-card rounded-2xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.04)] border border-border/40">
-                  <div className={cat.color.split(' ')[0] + " " + cat.color.split(' ')[1]}>
-                    <Icon size={32} strokeWidth={1.5} />
-                  </div>
+              <Link key={cat.id} href={`/categories/${cat.id}`} className="flex flex-col items-center justify-center gap-3 bg-card px-4 py-5 min-w-[110px] rounded-[1.5rem] shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 active:scale-[0.98] transition-transform shrink-0 snap-start">
+                <div className={cat.color.split(' ')[0] + " " + cat.color.split(' ')[1]}>
+                  <Icon size={28} strokeWidth={1.5} />
                 </div>
-                <span className="text-xs font-bold text-gray-800 dark:text-gray-300 whitespace-nowrap">{cat.title}</span>
+                <span className="text-xs font-bold text-foreground text-center leading-tight">{cat.title}</span>
               </Link>
             )
           })}

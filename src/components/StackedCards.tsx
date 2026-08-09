@@ -73,9 +73,9 @@ export default function StackedCards() {
   };
 
   return (
-    <div className="relative w-full h-[190px] px-3 mt-6 mb-8 mx-auto max-w-[500px]">
+    <div className="relative w-full h-[190px] mt-6 mb-8">
       {cards.length === 0 && (
-        <div className="absolute inset-0 mx-5 flex flex-col items-center justify-center text-center bg-card rounded-3xl border border-border border-dashed p-6">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-card rounded-3xl border border-border border-dashed p-6">
           <p className="text-muted-foreground font-medium mb-4">No more upcoming appointments.</p>
           <button 
             onClick={handleReset}
@@ -101,7 +101,7 @@ export default function StackedCards() {
           return (
             <motion.div
               key={card.id}
-              className="absolute left-3 right-3 origin-top rounded-[1.8rem]" // Added rounded to fix rectangular shadow
+              className="absolute left-0 right-0 origin-top rounded-[1.8rem] w-full" // Removed left-3 right-3 to fit parent exactly
               style={{ zIndex }}
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={{ 
