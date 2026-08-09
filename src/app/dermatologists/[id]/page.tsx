@@ -102,7 +102,7 @@ export default async function DermatologistProfile({ params }: { params: Promise
         </div>
       </div>
       
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-background/90 backdrop-blur-xl border-t border-border z-30 flex items-center gap-4">
+      <div className="fixed bottom-[72px] left-0 right-0 p-6 bg-background/90 backdrop-blur-xl border-t border-border z-30 flex items-center gap-4">
         <div className="flex flex-col flex-1">
           <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Consultation</p>
           <p className="text-lg font-black text-foreground">$120</p>

@@ -88,11 +88,11 @@ export default function StackedCards() {
 
       <AnimatePresence>
         {cards.map((card, index) => {
-          // Subtle stack depth
+          // Moderate, intentional stack visibility
           const isTop = index === 0;
-          const yOffset = index * 6; // Very small vertical offset
-          const scale = 1 - index * 0.04; // Steeper scaling so edges don't stick out horizontally as much
-          const opacity = 1 - index * 0.2; // Quicker opacity fade
+          const yOffset = index * 12; // Balanced vertical offset
+          const scale = 1 - index * 0.02; // Slight scaling so cards are visible underneath
+          const opacity = 1 - index * 0.08; // Keep them bright enough to be seen
           const zIndex = 10 - index;
           
           // Only show top 4 cards
