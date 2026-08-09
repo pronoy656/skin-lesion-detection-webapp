@@ -67,15 +67,10 @@ export default function DermatologistsPage() {
                     <h3 className="font-bold text-lg text-foreground mb-1 leading-tight">{doc.name}</h3>
                     <p className="text-sm text-muted-foreground font-medium mb-3">{doc.specialty}</p>
                     
-                    {/* Availability Status Badge */}
+                    {/* Experience */}
                     <div className="flex items-center">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        doc.availability === "Available Today" 
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800/50"
-                          : "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50"
-                      }`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${doc.availability === "Available Today" ? "bg-green-500" : "bg-blue-500"}`}></span>
-                        {doc.availability === "Available Today" ? "Available Today" : doc.availability}
+                      <span className="inline-flex items-center text-xs font-bold text-muted-foreground">
+                        {doc.experience} Experience
                       </span>
                     </div>
                   </div>

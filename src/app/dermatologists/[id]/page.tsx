@@ -34,29 +34,23 @@ export default async function DermatologistProfile({ params }: { params: Promise
           
           <p className="text-sm text-muted-foreground font-medium mb-6">{doctor.hospital}</p>
           
-          <div className="flex justify-between bg-muted rounded-2xl p-4">
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mb-2">
-                <Clock size={18} />
-              </div>
-              <span className="text-xs font-bold text-foreground">{doctor.experience}</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Experience</span>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-muted/50 border border-border/50 rounded-2xl p-4 flex flex-col justify-center shadow-sm">
+              <Clock size={18} className="text-blue-600 dark:text-blue-400 mb-2" />
+              <span className="text-sm font-bold text-foreground leading-tight">{doctor.experience}</span>
+              <span className="text-xs text-muted-foreground">Experience</span>
             </div>
-            <div className="w-px bg-border"></div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center mb-2">
-                <Star size={18} />
-              </div>
-              <span className="text-xs font-bold text-foreground">{doctor.reviews}</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Reviews</span>
+            
+            <div className="bg-muted/50 border border-border/50 rounded-2xl p-4 flex flex-col justify-center shadow-sm">
+              <Star size={18} className="text-amber-600 dark:text-amber-400 mb-2" />
+              <span className="text-sm font-bold text-foreground leading-tight">{doctor.reviews}</span>
+              <span className="text-xs text-muted-foreground">Reviews</span>
             </div>
-            <div className="w-px bg-border"></div>
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mb-2">
-                <Shield size={18} />
-              </div>
-              <span className="text-xs font-bold text-foreground">{doctor.patients}</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Patients</span>
+            
+            <div className="bg-muted/50 border border-border/50 rounded-2xl p-4 flex flex-col justify-center shadow-sm">
+              <Shield size={18} className="text-green-600 dark:text-green-400 mb-2" />
+              <span className="text-sm font-bold text-foreground leading-tight">{doctor.patients}</span>
+              <span className="text-xs text-muted-foreground">Patients</span>
             </div>
           </div>
         </div>
@@ -93,10 +87,23 @@ export default async function DermatologistProfile({ params }: { params: Promise
             </h2>
             <div className="flex flex-wrap gap-2">
               {doctor.expertise.map((exp, i) => (
-                <span key={i} className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm">
+                <span key={i} className="bg-muted/80 text-foreground border border-border/80 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm whitespace-nowrap">
                   {exp}
                 </span>
               ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+              <CalendarPlus size={18} className="text-blue-500" /> Availability
+            </h2>
+            <div className="bg-muted/50 border border-border/50 p-5 rounded-2xl flex items-center justify-between shadow-sm">
+               <div>
+                  <p className="font-bold text-foreground mb-0.5">{doctor.availability === "Available Today" ? "Available Today" : doctor.availability}</p>
+                  <p className="text-xs text-muted-foreground font-medium">Next available appointment</p>
+               </div>
+               <span className={`w-3 h-3 rounded-full shadow-sm ${doctor.availability === "Available Today" ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse" : "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]"}`}></span>
             </div>
           </div>
         </div>
