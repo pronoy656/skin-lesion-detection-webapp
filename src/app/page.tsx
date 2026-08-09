@@ -46,41 +46,74 @@ function MobileAppContent() {
           <button className="text-blue-500 text-sm font-semibold active:opacity-70 transition-opacity">History</button>
         </div>
         
-        {/* Blue Banner Card */}
-        <div className="relative w-full" onClick={() => setUploadModalOpen(true)}>
-          {/* Layered shadow effect to match design */}
-          <div className="absolute top-4 left-4 right-4 bottom-0 bg-blue-300 rounded-[2rem] blur-xl opacity-70 dark:opacity-40"></div>
+        {/* Scrollable Banner Container */}
+        <div className="flex gap-4 overflow-x-auto pb-6 pt-2 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
           
-          <div className="relative bg-gradient-to-br from-blue-400 to-blue-500 text-white p-6 rounded-3xl overflow-hidden shadow-sm cursor-pointer active:scale-[0.98] transition-transform">
-            {/* Background circular accents */}
-            <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
-            <div className="absolute right-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
+          {/* Stacked Card 1 */}
+          <div className="relative w-full min-w-[320px] max-w-[340px] shrink-0 snap-center" onClick={() => setUploadModalOpen(true)}>
+            {/* Stacked background layers */}
+            <div className="absolute -bottom-3 left-6 right-6 h-10 bg-blue-300 dark:bg-blue-900 rounded-3xl opacity-60"></div>
+            <div className="absolute -bottom-1.5 left-3 right-3 h-10 bg-blue-400 dark:bg-blue-800 rounded-3xl opacity-80"></div>
             
-            <div className="relative z-10 w-2/3">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-xl font-bold">Instant Scan</h3>
-                <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+            {/* Main Card */}
+            <div className="relative bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-[2rem] overflow-hidden shadow-sm cursor-pointer active:scale-[0.98] transition-transform">
+              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
+              <div className="absolute right-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
+              
+              <div className="relative z-10 w-2/3">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-xl font-bold">Instant Scan</h3>
+                  <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                <p className="text-blue-100 text-sm font-medium mb-6">Detect lesions instantly</p>
+                
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
+                  <Camera size={14} className="text-white" />
+                  <span className="text-xs font-semibold">Scan Now</span>
                 </div>
               </div>
-              <p className="text-blue-100 text-sm font-medium mb-6">Detect lesions instantly</p>
               
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
-                <Camera size={14} className="text-white" />
-                <span className="text-xs font-semibold">Scan Now</span>
+              {/* Doctor Image Overlay (Transparent PNG) */}
+              <div className="absolute bottom-0 right-0 w-36 h-[115%] pointer-events-none">
+                <img 
+                  src="https://www.freepnglogos.com/uploads/doctor-png/png-woman-doctor-transparent-woman-doctor-images-40.png" 
+                  alt="Doctor" 
+                  className="w-full h-full object-contain object-bottom drop-shadow-lg"
+                />
               </div>
             </div>
+          </div>
+
+          {/* Stacked Card 2 */}
+          <div className="relative w-full min-w-[320px] max-w-[340px] shrink-0 snap-center pr-4">
+            {/* Stacked background layers */}
+            <div className="absolute -bottom-3 left-6 right-10 h-10 bg-purple-300 dark:bg-purple-900 rounded-3xl opacity-60"></div>
+            <div className="absolute -bottom-1.5 left-3 right-7 h-10 bg-purple-400 dark:bg-purple-800 rounded-3xl opacity-80"></div>
             
-            {/* Doctor Image Overlay */}
-            <div className="absolute bottom-0 right-2 w-32 h-[120%] pointer-events-none opacity-100">
-              <img 
-                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                alt="Doctor" 
-                className="w-full h-full object-cover object-top mask-image-bottom"
-                style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
-              />
+            {/* Main Card */}
+            <div className="relative bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-[2rem] overflow-hidden shadow-sm cursor-pointer active:scale-[0.98] transition-transform mr-4">
+              <div className="absolute -left-8 -top-8 w-40 h-40 rounded-full border-[20px] border-white/10"></div>
+              <div className="absolute left-12 -bottom-12 w-32 h-32 rounded-full border-[15px] border-white/10"></div>
+              
+              <div className="relative z-10 w-full flex flex-col items-end text-right">
+                <div className="flex items-center gap-2 mb-1 justify-end">
+                  <h3 className="text-xl font-bold">Consult Info</h3>
+                  <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center backdrop-blur-sm">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                  </div>
+                </div>
+                <p className="text-purple-100 text-sm font-medium mb-6">Talk to a specialist</p>
+                
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
+                  <Share2 size={14} className="text-white" />
+                  <span className="text-xs font-semibold">Book Now</span>
+                </div>
+              </div>
             </div>
           </div>
+          
         </div>
       </section>
 
@@ -218,9 +251,40 @@ function AppFlow() {
   const [appState, setAppState] = useState<AppState>("idle");
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSaving, setIsSaving] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  const handleSavePDF = async () => {
+    if (!resultRef.current) return;
+    setIsSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+      
+      const canvas = await html2canvas(resultRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: document.documentElement.classList.contains("dark") ? "#09090b" : "#ffffff"
+      });
+      
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [canvas.width, canvas.height]
+      });
+      
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.save("Skin_Lesion_Analysis.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -389,51 +453,60 @@ function AppFlow() {
                 </button>
               </header>
 
-              <div className="flex-1 p-6 space-y-6 max-w-md mx-auto w-full">
-                <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-black shadow-xl border-4 border-card">
-                  {imageSrc && (
-                    <>
-                      <img src={imageSrc} alt="Analyzed" className="w-full h-full object-cover" />
-                      {/* Mock Bounding Box Overlay */}
-                      <div className="absolute top-1/4 left-1/4 w-1/3 h-1/3 border-2 border-red-500 rounded-xl bg-red-500/10 flex items-start p-1.5 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-                        <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md uppercase tracking-wider">Detected</span>
-                      </div>
-                    </>
-                  )}
-                </div>
+              <div className="flex-1 max-w-md mx-auto w-full flex flex-col">
+                {/* PDF Content Area */}
+                <div ref={resultRef} className="p-6 space-y-6 bg-background dark:bg-zinc-950 rounded-b-[2rem]">
+                  <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-black shadow-xl border-4 border-card">
+                    {imageSrc && (
+                      <>
+                        <img src={imageSrc} alt="Analyzed" className="w-full h-full object-cover" />
+                        {/* Mock Bounding Box Overlay */}
+                        <div className="absolute top-1/4 left-1/4 w-1/3 h-1/3 border-2 border-red-500 rounded-xl bg-red-500/10 flex items-start p-1.5 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                          <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md uppercase tracking-wider">Detected</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
 
-                <div className="bg-card rounded-3xl p-6 border border-border shadow-md">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-14 h-14 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-500 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-red-100 dark:border-red-900/50">
-                      <AlertCircle size={28} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground">Melanoma</h2>
-                      <div className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-full mt-2 border border-red-100 dark:border-red-900/50">
-                        <Activity size={16} />
-                        <span className="text-sm font-bold">High Risk (94% Match)</span>
+                  <div className="bg-card rounded-3xl p-6 border border-border shadow-md">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-14 h-14 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-500 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-red-100 dark:border-red-900/50">
+                        <AlertCircle size={28} />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-foreground">Melanoma</h2>
+                        <div className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-full mt-2 border border-red-100 dark:border-red-900/50">
+                          <Activity size={16} />
+                          <span className="text-sm font-bold">High Risk (94% Match)</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="mt-4">
-                    <h3 className="font-bold text-gray-900 dark:text-foreground mb-2">Treatment & Care</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Melanoma is a serious form of skin cancer. The primary treatment is surgical excision to remove the melanoma and surrounding healthy skin. 
-                      Early detection significantly increases the cure rate. Please consult a dermatologist immediately for a biopsy and professional diagnosis.
-                    </p>
-                  </div>
-                  
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs text-red-500 font-bold flex items-center gap-2">
-                      <AlertCircle size={14} /> This is an AI assessment, not a medical diagnosis.
-                    </p>
+                    
+                    <div className="mt-4">
+                      <h3 className="font-bold text-gray-900 dark:text-foreground mb-2">Treatment & Care</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Melanoma is a serious form of skin cancer. The primary treatment is surgical excision to remove the melanoma and surrounding healthy skin. 
+                        Early detection significantly increases the cure rate. Please consult a dermatologist immediately for a biopsy and professional diagnosis.
+                      </p>
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <p className="text-xs text-red-500 font-bold flex items-center gap-2">
+                        <AlertCircle size={14} /> This is an AI assessment, not a medical diagnosis.
+                      </p>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 pt-2 pb-8">
-                  <button className="flex items-center justify-center gap-2 bg-card border border-border hover:bg-muted py-4 rounded-2xl font-bold text-base transition-colors shadow-sm text-gray-900 dark:text-foreground">
-                    <Save size={20} /> Save
+                {/* Action Buttons (Not included in PDF) */}
+                <div className="grid grid-cols-2 gap-4 p-6 pt-2 pb-8">
+                  <button 
+                    onClick={handleSavePDF}
+                    disabled={isSaving}
+                    className="flex items-center justify-center gap-2 bg-card border border-border hover:bg-muted py-4 rounded-2xl font-bold text-base transition-colors shadow-sm text-gray-900 dark:text-foreground disabled:opacity-70"
+                  >
+                    {isSaving ? <Activity className="animate-spin" size={20} /> : <Save size={20} />} 
+                    {isSaving ? "Saving..." : "Save PDF"}
                   </button>
                   <button className="flex items-center justify-center gap-2 bg-card border border-border hover:bg-muted py-4 rounded-2xl font-bold text-base transition-colors shadow-sm text-gray-900 dark:text-foreground">
                     <Share2 size={20} /> Share
