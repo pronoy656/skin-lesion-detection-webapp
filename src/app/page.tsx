@@ -106,20 +106,6 @@ function MobileAppContent() {
         </div>
       </section>
 
-      {/* QUICK STATS SECTION */}
-      <section className="mt-8">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-3xl p-6 border border-blue-100 dark:border-blue-800/30 flex items-center justify-between shadow-sm">
-          <div className="flex flex-col">
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Total Scans This Month</p>
-            <h3 className="text-3xl font-black text-blue-600 dark:text-blue-400">4</h3>
-          </div>
-          <div className="h-12 w-px bg-blue-200 dark:bg-blue-800/50"></div>
-          <div className="flex flex-col">
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Healthy Results</p>
-            <h3 className="text-3xl font-black text-green-500">100%</h3>
-          </div>
-        </div>
-      </section>
 
       {/* HEALTH TIPS SECTION */}
       <section className="mt-8 mb-8">
