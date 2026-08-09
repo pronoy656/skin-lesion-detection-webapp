@@ -132,6 +132,50 @@ function MobileAppContent() {
         </div>
       </section>
 
+      {/* WHY USE OUR AI SECTION */}
+      <section className="mb-8">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-foreground mb-4">Why Use Our AI?</h2>
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white shadow-[0_8px_30px_rgba(59,130,246,0.2)]">
+          <ul className="space-y-5">
+            <li className="flex items-start gap-4">
+              <div className="bg-white/20 p-2 rounded-full mt-0.5 shrink-0"><Icons.Zap size={18} /></div>
+              <div>
+                <h4 className="font-bold text-base">Instant Analysis</h4>
+                <p className="text-blue-100 text-[13px] mt-1 leading-snug">Get preliminary insights in seconds without waiting for an appointment.</p>
+              </div>
+            </li>
+            <li className="flex items-start gap-4">
+              <div className="bg-white/20 p-2 rounded-full mt-0.5 shrink-0"><Icons.ShieldCheck size={18} /></div>
+              <div>
+                <h4 className="font-bold text-base">High Accuracy</h4>
+                <p className="text-blue-100 text-[13px] mt-1 leading-snug">Trained on hundreds of thousands of clinically validated images.</p>
+              </div>
+            </li>
+            <li className="flex items-start gap-4">
+              <div className="bg-white/20 p-2 rounded-full mt-0.5 shrink-0"><Icons.Lock size={18} /></div>
+              <div>
+                <h4 className="font-bold text-base">Private & Secure</h4>
+                <p className="text-blue-100 text-[13px] mt-1 leading-snug">Your health data and images remain completely private and securely processed.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* MEDICAL DISCLAIMER SECTION */}
+      <section className="mb-4">
+        <div className="bg-card border border-red-200 dark:border-red-900/50 shadow-sm rounded-3xl p-6 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-2 h-full bg-red-500" />
+          <div className="flex items-center gap-3 mb-3 text-red-600 dark:text-red-500">
+            <Icons.ShieldAlert size={24} strokeWidth={2.5} />
+            <h3 className="text-lg font-black m-0 text-foreground">Medical Disclaimer</h3>
+          </div>
+          <p className="text-muted-foreground m-0 font-medium leading-relaxed text-sm">
+            The AI model provides informational insights. It is <strong className="text-foreground font-black underline decoration-red-500 decoration-2 underline-offset-2">NOT</strong> a medical diagnosis. Always consult a qualified healthcare provider for any concerns regarding your skin health.
+          </p>
+        </div>
+      </section>
+
       {/* Upload/Scan Modal Flow stays hidden here */}
       <AppFlow />
     </div>
