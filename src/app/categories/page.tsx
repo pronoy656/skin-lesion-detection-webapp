@@ -40,8 +40,8 @@ export default function CategoriesPage() {
             
             return (
               <Link key={cat.id} href={`/categories/${cat.id}`} className="bg-card p-6 rounded-[1.5rem] flex flex-col items-center text-center gap-3 shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 active:scale-[0.98] transition-transform">
-                <div className={`${cat.color.split(' ')[0]} ${cat.color.split(' ')[1]} mb-1`}>
-                  <Icon size={32} strokeWidth={1.5} />
+                <div className={`${cat.color.replace(/bg-\S+/g, '')} drop-shadow-sm mb-1`}>
+                  <Icon size={34} strokeWidth={2} />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm text-foreground mb-1">{cat.title}</h3>

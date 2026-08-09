@@ -137,5 +137,27 @@ export const blogs = [
     readTime: "4 min read",
     date: "Jul 28, 2026",
     author: "Dr. Adrian Segara"
+  },
+  {
+    id: "what-is-dermoscopy",
+    title: "What is Dermoscopy and why is it important?",
+    categoryId: "mole-check",
+    excerpt: "Discover how this non-invasive technique helps dermatologists analyze moles in detail.",
+    content: "Dermoscopy is a non-invasive skin examination technique that uses a dermatoscope to evaluate colors and microstructures of the epidermis not visible to the naked eye. It significantly improves the accuracy of diagnosing melanoma.",
+    image: "https://images.unsplash.com/photo-1618498082410-b4aa22193b38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    readTime: "4 min read",
+    date: "Aug 01, 2026",
+    author: "Dr. Ryan Chen"
+  },
+  {
+    id: "when-to-worry-about-a-mole",
+    title: "When should you worry about a mole?",
+    categoryId: "mole-check",
+    excerpt: "Key indicators that a mole needs immediate professional evaluation.",
+    content: "Most moles are harmless, but it's important to know when to seek medical advice. If a mole bleeds, oozes, itches, or becomes tender or painful, you should have it checked. Additionally, any new mole that appears after age 30 should be evaluated by a dermatologist.",
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    readTime: "6 min read",
+    date: "Jul 15, 2026",
+    author: "Dr. Alexa Nova"
   }
 ];

@@ -20,8 +20,8 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
         </Link>
         
         <div className="flex items-center gap-3 mb-4">
-          <div className={`${category.color.split(' ')[0]} ${category.color.split(' ')[1]}`}>
-            <Icon size={24} strokeWidth={2} />
+          <div className={`${category.color.replace(/bg-\S+/g, '')} drop-shadow-md`}>
+            <Icon size={28} strokeWidth={2.5} />
           </div>
           <h1 className="text-3xl font-black text-foreground">{category.title}</h1>
         </div>
@@ -92,8 +92,8 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
               const CatIcon = (Icons as any)[cat.icon];
               return (
                 <Link key={cat.id} href={`/categories/${cat.id}`} className="flex flex-col items-center justify-center gap-3 bg-card px-4 py-5 min-w-[120px] rounded-[1.5rem] shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 active:scale-[0.98] transition-transform shrink-0 snap-start">
-                  <div className={`${cat.color.split(' ')[0]} ${cat.color.split(' ')[1]}`}>
-                    <CatIcon size={24} strokeWidth={1.5} />
+                  <div className={`${cat.color.replace(/bg-\S+/g, '')} drop-shadow-sm`}>
+                    <CatIcon size={26} strokeWidth={2} />
                   </div>
                   <h3 className="font-bold text-xs text-foreground text-center leading-tight">{cat.title}</h3>
                 </Link>

@@ -65,8 +65,8 @@ function MobileAppContent() {
             const Icon = (Icons as any)[cat.icon];
             return (
               <Link key={cat.id} href={`/categories/${cat.id}`} className="flex flex-col items-center justify-center gap-3 bg-card px-4 py-5 min-w-[110px] rounded-[1.5rem] shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border/40 active:scale-[0.98] transition-transform shrink-0 snap-start">
-                <div className={cat.color.split(' ')[0] + " " + cat.color.split(' ')[1]}>
-                  <Icon size={28} strokeWidth={1.5} />
+                <div className={`${cat.color.replace(/bg-\S+/g, '')} drop-shadow-sm`}>
+                  <Icon size={30} strokeWidth={2} />
                 </div>
                 <span className="text-xs font-bold text-foreground text-center leading-tight">{cat.title}</span>
               </Link>
