@@ -2,8 +2,30 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Eye, EyeOff, Mail, Lock, User, Sparkles, Activity } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+
+// Custom Premium Logo combining Medical + AI + Tech
+const CustomLogo = () => (
+  <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md mx-auto mb-3">
+    <rect width="48" height="48" rx="14" fill="url(#blue-gradient)"/>
+    <path d="M24 10C16 10 10 16 10 24C10 32 16 38 24 38C32 38 38 32 38 24C38 16 32 10 24 10ZM24 34C18.4772 34 14 29.5228 14 24C14 18.4772 18.4772 14 24 14C29.5228 14 34 18.4772 34 24C34 29.5228 29.5228 34 24 34Z" fill="white" fillOpacity="0.2"/>
+    <circle cx="24" cy="24" r="10" fill="white"/>
+    <path d="M24 18V30M18 24H30" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
+    <circle cx="24" cy="24" r="3" fill="#3B82F6"/>
+    <circle cx="18" cy="18" r="2" fill="white"/>
+    <circle cx="30" cy="18" r="2" fill="white"/>
+    <circle cx="18" cy="30" r="2" fill="white"/>
+    <circle cx="30" cy="30" r="2" fill="white"/>
+    <path d="M20 20L22 22M28 20L26 22M20 28L22 26M28 28L26 26" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+    <defs>
+      <linearGradient id="blue-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#3B82F6"/>
+        <stop offset="1" stopColor="#4F46E5"/>
+      </linearGradient>
+    </defs>
+  </svg>
+);
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -16,7 +38,6 @@ export default function SignUpPage() {
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, creating an account just logs you in directly
     login(email);
   };
 
@@ -28,106 +49,109 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-background">
-      {/* Premium Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-blue-500/5 dark:bg-blue-500/10 blur-[100px]" />
-        <div className="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] rounded-full bg-indigo-500/5 dark:bg-indigo-500/10 blur-[100px]" />
-      </div>
+    <div className="h-[100dvh] overflow-hidden flex flex-col bg-background relative box-border">
+      {/* Absolute Background - very subtle */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20"
+        style={{
+          background: 'radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 70%)'
+        }}
+      />
 
-      <header className="p-6 relative z-10">
-        <Link href="/sign-in" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold transition-colors">
-          <ChevronLeft size={20} /> <span className="mt-0.5">Back</span>
+      {/* Header */}
+      <header className="p-4 z-10 shrink-0">
+        <Link href="/sign-in" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground font-semibold transition-colors">
+          <ChevronLeft size={20} /> <span>Back</span>
         </Link>
       </header>
 
-      <main className="flex-1 flex flex-col justify-center px-6 pb-20 relative z-10 max-w-md mx-auto w-full">
+      {/* Main Content - Centered vertically, takes remaining space */}
+      <main className="flex-1 flex flex-col justify-center px-6 max-w-[400px] mx-auto w-full z-10 pb-2">
         
-        {/* Brand Logo */}
-        <div className="mb-10 flex flex-col items-center">
-          <div className="relative flex items-center justify-center w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 shadow-sm mb-6">
-            <div className="absolute inset-0 rounded-[1.5rem] bg-blue-500/5 animate-pulse" />
-            <Activity className="text-blue-600 dark:text-blue-400 z-10" size={32} strokeWidth={2} />
-            <Sparkles className="absolute -top-1 -right-1 text-indigo-400 z-10" size={14} />
-          </div>
-          <h1 className="text-3xl font-black text-foreground mb-3 text-center tracking-tight">Create Account</h1>
-          <p className="text-muted-foreground font-medium text-center max-w-[280px] leading-relaxed text-sm">
+        {/* Branding & Title */}
+        <div className="text-center mb-5 shrink-0">
+          <CustomLogo />
+          <h1 className="text-2xl font-black text-foreground mb-1 tracking-tight">Create Account</h1>
+          <p className="text-muted-foreground font-medium text-sm">
             Start your AI skin health journey.
           </p>
         </div>
 
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground/80 uppercase tracking-wider ml-1">Full Name</label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-blue-500 transition-colors">
-                <User size={20} strokeWidth={2} />
+        {/* Form */}
+        <form onSubmit={handleSignUp} className="space-y-3 shrink-0">
+          
+          {/* Grid for slightly more compact layout on taller screens, but stacked for mobile */}
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-foreground/80 ml-1 uppercase tracking-wider">Full Name</label>
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 flex items-center justify-center text-muted-foreground pointer-events-none">
+                <User size={16} strokeWidth={2.5} />
               </div>
               <input 
                 type="text" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your name"
-                className="w-full bg-card/50 backdrop-blur-sm border border-border/60 rounded-2xl pl-12 pr-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-medium placeholder:text-muted-foreground/50"
+                className="w-full bg-card border border-border/80 rounded-[1rem] pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium text-[15px]"
                 required
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground/80 uppercase tracking-wider ml-1">Email</label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-blue-500 transition-colors">
-                <Mail size={20} strokeWidth={2} />
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-foreground/80 ml-1 uppercase tracking-wider">Email</label>
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 flex items-center justify-center text-muted-foreground pointer-events-none">
+                <Mail size={16} strokeWidth={2.5} />
               </div>
               <input 
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email@example.com"
-                className="w-full bg-card/50 backdrop-blur-sm border border-border/60 rounded-2xl pl-12 pr-5 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-medium placeholder:text-muted-foreground/50"
+                className="w-full bg-card border border-border/80 rounded-[1rem] pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium text-[15px]"
                 required
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground/80 uppercase tracking-wider ml-1">Password</label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-blue-500 transition-colors">
-                <Lock size={20} strokeWidth={2} />
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-foreground/80 ml-1 uppercase tracking-wider">Password</label>
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 flex items-center justify-center text-muted-foreground pointer-events-none">
+                <Lock size={16} strokeWidth={2.5} />
               </div>
               <input 
                 type={showPassword ? "text" : "password"} 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-card/50 backdrop-blur-sm border border-border/60 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-medium placeholder:text-muted-foreground/50"
+                className="w-full bg-card border border-border/80 rounded-[1rem] pl-11 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium text-[15px]"
                 required
               />
               <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={showPassword ? "Hide password" : "Show password"}
                 tabIndex={-1}
               >
-                {showPassword ? <EyeOff size={18} strokeWidth={2} /> : <Eye size={18} strokeWidth={2} />}
+                {showPassword ? <EyeOff size={16} strokeWidth={2.5} /> : <Eye size={16} strokeWidth={2.5} />}
               </button>
             </div>
           </div>
           
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground/80 uppercase tracking-wider ml-1">Confirm Password</label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-blue-500 transition-colors">
-                <Lock size={20} strokeWidth={2} />
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-foreground/80 ml-1 uppercase tracking-wider">Confirm Password</label>
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 flex items-center justify-center text-muted-foreground pointer-events-none">
+                <Lock size={16} strokeWidth={2.5} />
               </div>
               <input 
                 type={showPassword ? "text" : "password"} 
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full bg-card/50 backdrop-blur-sm border border-border/60 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all font-medium placeholder:text-muted-foreground/50"
+                className="w-full bg-card border border-border/80 rounded-[1rem] pl-11 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium text-[15px]"
                 required
               />
             </div>
@@ -135,30 +159,28 @@ export default function SignUpPage() {
 
           <button 
             type="submit"
-            className="w-full relative group overflow-hidden bg-foreground text-background font-bold rounded-2xl py-4 shadow-[0_4px_14px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_14px_rgba(255,255,255,0.1)] active:scale-[0.98] transition-all mt-6"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-[1rem] py-3.5 shadow-md active:scale-[0.98] transition-all mt-2 flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 dark:via-black/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-            <span className="relative flex items-center justify-center gap-2">
-              Create Account <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </span>
+            Create Account <span>→</span>
           </button>
         </form>
 
-        {/* Demo Login Helper */}
-        <div className="mt-8">
+        {/* Demo Helper */}
+        <div className="mt-4 shrink-0">
           <button 
             type="button"
             onClick={fillDemoCredentials}
-            className="w-full py-3 px-4 rounded-xl border border-border/50 bg-muted/30 hover:bg-muted/60 transition-colors flex items-center justify-center gap-2 group"
+            className="mx-auto flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-muted/40 hover:bg-muted/80 transition-colors"
           >
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground transition-colors">
-              Use Demo Information
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Use Demo Info
             </span>
           </button>
         </div>
 
-        <div className="mt-10 text-center">
+        {/* Footer */}
+        <div className="mt-5 text-center shrink-0">
           <p className="text-muted-foreground text-sm font-medium">
             Already have an account?{" "}
             <Link href="/sign-in" className="text-foreground font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -167,12 +189,6 @@ export default function SignUpPage() {
           </p>
         </div>
       </main>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
-        }
-      `}} />
     </div>
   );
 }
