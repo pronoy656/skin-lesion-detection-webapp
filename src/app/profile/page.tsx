@@ -1,6 +1,22 @@
 "use client";
 
-import { User, Settings, Info, ChevronRight, Moon, Sun, LogOut } from "lucide-react";
+import { 
+  User, 
+  Settings, 
+  Info, 
+  ChevronRight, 
+  Moon, 
+  Sun, 
+  LogOut, 
+  History, 
+  ChevronLeft,
+  ShieldCheck,
+  Brain,
+  Sparkles,
+  Sliders,
+  Bell,
+  Camera
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
@@ -18,135 +34,219 @@ export default function ProfilePage() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen pb-24 bg-background">
-      <header className="p-4 border-b border-border bg-card sticky top-0 z-10 flex items-center justify-between">
-        <h1 className="text-xl font-bold">Profile</h1>
+    <div className="flex flex-col min-h-screen pb-28 bg-background">
+      {/* Sticky Header without drop shadow */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/" 
+            className="w-9 h-9 flex items-center justify-center bg-card border border-border/60 text-foreground hover:bg-muted rounded-xl transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </Link>
+          <h1 className="text-sm sm:text-base font-bold text-foreground">My Profile</h1>
+        </div>
       </header>
 
-      <div className="p-6 space-y-8">
-        {/* User Info Section */}
+      <div className="p-4 sm:p-5 max-w-2xl mx-auto w-full space-y-5">
+        {/* User Profile Card */}
         {isAuthenticated && user ? (
-          <div className="flex flex-col gap-8">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full flex items-center justify-center shrink-0">
+          <div className="bg-card border border-border/60 rounded-2xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
+            <div className="flex items-start gap-4 mb-4">
+              <Link 
+                href="/profile/edit" 
+                className="w-16 h-16 shrink-0 rounded-2xl overflow-hidden bg-muted border border-border/50 shadow-sm relative flex items-center justify-center text-blue-600 dark:text-blue-400 block hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                aria-label="Edit Profile Information"
+              >
                 {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                  <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-xl font-black">{user.name.charAt(0)}</span>
+                  <span className="text-2xl font-black">{user.name.charAt(0)}</span>
                 )}
-              </div>
-              <div>
-                <h2 className="text-xl font-bold">{user.name}</h2>
-                <p className="text-sm text-muted-foreground font-medium">{user.email}</p>
+              </Link>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <h2 className="text-base font-bold text-foreground truncate">{user.name}</h2>
+                  <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 flex items-center gap-1">
+                    <ShieldCheck size={11} /> Verified
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground font-medium truncate mb-2">{user.email}</p>
+                <div className="inline-flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 px-2.5 py-1 rounded-lg text-[10px] font-semibold border border-blue-200/40">
+                  <Sparkles size={11} /> AI Screening Member
+                </div>
               </div>
             </div>
 
-            {/* Quick Stats Premium Card */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-3xl p-6 border border-blue-100 dark:border-blue-800/30 flex items-center justify-between shadow-sm relative overflow-hidden">
-              <div className="flex flex-col relative z-10 w-1/2">
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Total Scans</p>
-                <h3 className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-1">4</h3>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">This month</p>
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 gap-2 pt-3.5 border-t border-border/40 text-center">
+              <div className="bg-muted/40 border border-border/40 rounded-xl p-2.5">
+                <p className="text-base font-black text-blue-600 dark:text-blue-400 leading-none mb-1">4 Scans</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Completed This Month</p>
               </div>
-              
-              <div className="h-16 w-px bg-blue-200 dark:bg-blue-800/50 relative z-10"></div>
-              
-              <div className="flex flex-col relative z-10 w-1/2 pl-6">
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Healthy</p>
-                <h3 className="text-4xl font-black text-green-500 mb-1">100%</h3>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Overall results</p>
+              <div className="bg-muted/40 border border-border/40 rounded-xl p-2.5">
+                <p className="text-base font-black text-emerald-600 dark:text-emerald-400 leading-none mb-1">100% Healthy</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Overall AI Risk Index</p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-card border border-border rounded-2xl p-6 text-center">
-            <div className="w-16 h-16 bg-muted text-muted-foreground rounded-full flex items-center justify-center mx-auto mb-4">
-              <User size={32} />
+          <div className="bg-card border border-border/60 rounded-2xl p-5 text-center shadow-sm">
+            <div className="w-14 h-14 bg-muted text-muted-foreground rounded-2xl flex items-center justify-center mx-auto mb-3 border border-border/50">
+              <User size={24} />
             </div>
-            <h2 className="text-xl font-bold mb-2">Guest User</h2>
-            <p className="text-sm text-muted-foreground mb-6 font-medium px-4">
-              You are currently browsing as a guest. Sign in to access your profile and settings.
+            <h2 className="text-base font-bold text-foreground mb-1">Guest Account</h2>
+            <p className="text-xs text-muted-foreground mb-4 font-medium max-w-xs mx-auto">
+              Sign in to save your detection scans, consult dermatologists, and sync your health history.
             </p>
-            <div className="flex flex-col gap-3 w-full">
-              <Link href="/sign-in" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-[1.25rem] shadow-[0_4px_14px_rgba(37,99,235,0.2)] active:scale-[0.98] transition-all">
+            <div className="flex gap-2.5 w-full">
+              <Link 
+                href="/sign-in" 
+                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-sm active:scale-95 transition-all text-center"
+              >
                 Sign In
               </Link>
-              <Link href="/sign-up" className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold py-3.5 rounded-[1.25rem] active:scale-[0.98] transition-all">
+              <Link 
+                href="/sign-up" 
+                className="flex-1 bg-card border border-border/60 text-foreground font-bold py-2.5 px-4 rounded-xl text-xs active:scale-95 transition-all text-center hover:bg-muted"
+              >
                 Create Account
               </Link>
             </div>
           </div>
         )}
 
-        {/* Menu Sections - Only fully shown if authenticated, or limited if guest */}
+        {/* Menu Sections */}
         
         {isAuthenticated && (
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Account</h3>
-            <Link href="/profile/edit" className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-muted/50 transition">
-              <div className="flex items-center gap-3 font-medium">
-                <User size={20} className="text-muted-foreground" /> Edit Profile
-              </div>
-              <ChevronRight size={20} className="text-muted-foreground" />
-            </Link>
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Account & Medical Data</h3>
+            <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm divide-y divide-border/40">
+              <Link 
+                href="/history" 
+                className="flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors"
+              >
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <History size={16} />
+                  </div>
+                  <span>Detection Scan History</span>
+                </div>
+                <ChevronRight size={16} className="text-muted-foreground" />
+              </Link>
+
+              <Link 
+                href="/profile/edit" 
+                className="flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors"
+              >
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                    <User size={16} />
+                  </div>
+                  <span>Edit Profile Information</span>
+                </div>
+                <ChevronRight size={16} className="text-muted-foreground" />
+              </Link>
+            </div>
           </div>
         )}
 
+        {/* Preferences */}
         <div className="space-y-2">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Preferences</h3>
-          
-          <button 
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-muted/50 transition"
-          >
-            <div className="flex items-center gap-3 font-medium">
-              {theme === 'dark' ? (
-                <Sun size={20} className="text-amber-500" />
-              ) : (
-                <Moon size={20} className="text-indigo-500" />
-              )}
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </div>
-            <div className="w-12 h-6 bg-muted rounded-full relative transition-colors shadow-inner flex items-center px-1">
-              <div className={`w-4 h-4 bg-foreground rounded-full transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
-            </div>
-          </button>
-
-          {isAuthenticated && (
-            <Link href="/settings" className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-muted/50 transition">
-              <div className="flex items-center gap-3 font-medium">
-                <Settings size={20} className="text-muted-foreground" /> App Settings
-              </div>
-              <ChevronRight size={20} className="text-muted-foreground" />
-            </Link>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Information</h3>
-          
-          <Link href="/about-ai" className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-muted/50 transition">
-            <div className="flex items-center gap-3 font-medium">
-              <Info size={20} className="text-muted-foreground" /> About AI Model
-            </div>
-            <ChevronRight size={20} className="text-muted-foreground" />
-          </Link>
-        </div>
-
-        {isAuthenticated && (
-          <div className="space-y-2">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Account Actions</h3>
-            
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Preferences & Theme</h3>
+          <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm divide-y divide-border/40">
             <button 
-              onClick={logout}
-              className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-red-50 dark:hover:bg-red-950/20 transition text-red-600 dark:text-red-500"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="w-full flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors text-left"
             >
-              <div className="flex items-center gap-3 font-medium">
-                <LogOut size={20} /> Logout
+              <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                </div>
+                <span>Theme Mode ({theme === 'dark' ? 'Dark' : 'Light'})</span>
+              </div>
+              <div className="w-10 h-5 bg-muted rounded-full relative transition-colors shadow-inner flex items-center px-0.5 border border-border/40">
+                <div className={`w-4 h-4 bg-blue-600 rounded-full transition-transform ${theme === 'dark' ? 'translate-x-5' : 'translate-x-0'}`} />
               </div>
             </button>
+
+            {isAuthenticated && (
+              <Link 
+                href="/settings" 
+                className="flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors"
+              >
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                    <Settings size={16} />
+                  </div>
+                  <span>App Settings & Notifications</span>
+                </div>
+                <ChevronRight size={16} className="text-muted-foreground" />
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Knowledge & Platform Info */}
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Platform Information</h3>
+          <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm divide-y divide-border/40">
+            <Link 
+              href="/about-ai" 
+              className="flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                  <Brain size={16} />
+                </div>
+                <span>About AI Model Architecture</span>
+              </div>
+              <ChevronRight size={16} className="text-muted-foreground" />
+            </Link>
+
+            <Link 
+              href="/blog" 
+              className="flex items-center justify-between p-3.5 hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <Info size={16} />
+                </div>
+                <span>Skin Health Insights & Articles</span>
+              </div>
+              <ChevronRight size={16} className="text-muted-foreground" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Account Actions */}
+        {isAuthenticated && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Account Actions</h3>
+            <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm">
+              <button 
+                onClick={logout}
+                className="w-full flex items-center justify-between p-3.5 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors text-red-600 dark:text-red-500 text-left"
+              >
+                <div className="flex items-center gap-3 text-xs font-semibold">
+                  <div className="w-8 h-8 rounded-xl bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                    <LogOut size={16} />
+                  </div>
+                  <span>Log Out of Account</span>
+                </div>
+              </button>
+            </div>
           </div>
         )}
+
+        {/* Clean Copyright Footer */}
+        <footer className="pt-4 pb-2 text-center border-t border-border/40">
+          <p className="text-[11px] text-muted-foreground font-medium">
+            © {new Date().getFullYear()} Skin Lesion AI Screening Platform. All rights reserved.
+          </p>
+        </footer>
+
       </div>
     </div>
   );

@@ -1,83 +1,112 @@
-import { CheckCircle2, AlertCircle, Calendar, ChevronRight } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { 
+  ChevronLeft, 
+  CheckCircle2, 
+  AlertCircle, 
+  Calendar, 
+  ChevronRight, 
+  Sparkles 
+} from "lucide-react";
+import { historyRecords } from "@/lib/data";
 
 export default function HistoryPage() {
-  const historyItems = [
-    {
-      id: 1,
-      date: "Aug 09, 2026",
-      time: "10:23 AM",
-      status: "Potential Lesion",
-      confidence: 94,
-      isPositive: true,
-    },
-    {
-      id: 2,
-      date: "Aug 02, 2026",
-      time: "02:15 PM",
-      status: "No Lesion Detected",
-      confidence: 98,
-      isPositive: false,
-    },
-    {
-      id: 3,
-      date: "Jul 15, 2026",
-      time: "09:45 AM",
-      status: "Unable to Analyze",
-      confidence: 0,
-      isPositive: null,
-    },
-    {
-      id: 4,
-      date: "Jun 28, 2026",
-      time: "11:30 AM",
-      status: "Potential Lesion",
-      confidence: 85,
-      isPositive: true,
-    }
-  ];
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filteredItems = historyRecords.filter((item) => {
+    if (activeFilter === "All") return true;
+    if (activeFilter === "Flagged") return item.isPositive === true;
+    if (activeFilter === "Healthy") return item.isPositive === false;
+    return true;
+  });
 
   return (
-    <div className="flex flex-col min-h-screen pb-20 bg-background">
-      <header className="p-4 border-b border-border bg-card sticky top-0 z-10">
-        <h1 className="text-xl font-bold">Detection History</h1>
+    <div className="min-h-screen bg-background pb-28">
+      {/* Sticky Header without drop shadow */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/profile" 
+            className="w-9 h-9 flex items-center justify-center bg-card border border-border/60 text-foreground hover:bg-muted rounded-xl transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </Link>
+          <h1 className="text-sm sm:text-base font-bold text-foreground">Detection History</h1>
+        </div>
       </header>
 
-      <div className="p-4 space-y-4">
-        {historyItems.map((item) => (
-          <div key={item.id} className="bg-card border border-border p-4 rounded-2xl shadow-sm flex items-center gap-4 cursor-pointer hover:bg-muted/50 transition-colors">
-            {/* Thumbnail Placeholder */}
-            <div className="w-14 h-14 bg-muted rounded-xl flex items-center justify-center shrink-0 overflow-hidden relative">
-              <div className="absolute inset-0 bg-slate-200 dark:bg-slate-700"></div>
-              {item.isPositive === true && <div className="absolute inset-0 border-2 border-red-500 rounded-xl pointer-events-none" />}
-            </div>
+      <div className="p-4 sm:p-5 max-w-2xl mx-auto space-y-4">
+        {/* Filter Pills without drop shadow */}
+        <div className="flex gap-2 pb-1">
+          {["All", "Flagged", "Healthy"].map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                activeFilter === filter
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                  : "bg-card border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1 mb-1">
-                {item.isPositive === true ? (
-                  <AlertCircle size={14} className="text-red-500" />
-                ) : item.isPositive === false ? (
-                  <CheckCircle2 size={14} className="text-green-500" />
-                ) : (
-                  <AlertCircle size={14} className="text-amber-500" />
-                )}
-                <h3 className="font-bold text-foreground text-sm truncate">{item.status}</h3>
+        {/* History Items List (Direct Page Links - No Modal) */}
+        <div className="space-y-3">
+          {filteredItems.map((item) => (
+            <Link 
+              key={item.id} 
+              href={`/history/${item.id}`}
+              className="bg-card border border-border/60 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-sm hover:border-blue-500/40 transition-all group active:scale-[0.99]"
+            >
+              {/* Authentic Skin Lesion Photo Thumbnail */}
+              <div className="w-16 h-16 shrink-0 bg-muted rounded-xl overflow-hidden relative border border-border/40 shadow-sm">
+                <img 
+                  src={item.image} 
+                  alt={item.notes} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                />
               </div>
-              
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1.5">
-                <Calendar size={12} />
-                <span>{item.date} · {item.time}</span>
-              </div>
-              
-              {item.confidence > 0 && (
-                <div className="inline-flex items-center bg-muted text-foreground px-2 py-0.5 rounded text-[10px] font-semibold">
-                  Confidence: {item.confidence}%
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-1">
+                  {item.isPositive === true ? (
+                    <span className="bg-red-500/10 text-red-600 dark:text-red-400 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+                      <AlertCircle size={11} /> {item.status}
+                    </span>
+                  ) : item.isPositive === false ? (
+                    <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+                      <CheckCircle2 size={11} /> {item.status}
+                    </span>
+                  ) : (
+                    <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+                      <AlertCircle size={11} /> {item.status}
+                    </span>
+                  )}
                 </div>
-              )}
-            </div>
-            
-            <ChevronRight size={20} className="text-muted-foreground shrink-0" />
-          </div>
-        ))}
+                
+                <h3 className="font-bold text-xs text-foreground truncate mb-1">{item.notes}</h3>
+                
+                {/* Single Line Clean Date & Confidence */}
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-medium truncate">
+                  <span className="flex items-center gap-1 shrink-0"><Calendar size={10} /> {item.date}</span>
+                  {item.confidence > 0 && (
+                    <>
+                      <span>•</span>
+                      <span className="font-semibold text-blue-600 dark:text-blue-400 shrink-0">{item.confidence}% Conf.</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <ChevronRight size={16} className="text-muted-foreground shrink-0 group-hover:text-foreground transition-colors" />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

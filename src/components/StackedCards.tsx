@@ -73,7 +73,7 @@ export default function StackedCards() {
   };
 
   return (
-    <div className="relative w-full h-[190px] mt-6 mb-8">
+    <div className="relative w-full h-[175px] mt-2 mb-6">
       {cards.length === 0 && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-card rounded-3xl border border-border border-dashed p-6">
           <p className="text-muted-foreground font-medium mb-4">No more upcoming appointments.</p>

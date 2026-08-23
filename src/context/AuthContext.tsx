@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   login: (email: string) => void;
   logout: () => void;
-  updateProfile: (name: string, email: string) => void;
+  updateProfile: (name: string, email: string, avatar?: string) => void;
   isAuthenticated: boolean;
 };
 
@@ -26,39 +26,71 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setIsMounted(true);
-    // Restore from localStorage if available
-    const storedUser = localStorage.getItem("demoUser");
-    if (storedUser) {
+    if (typeof window !== "undefined") {
       try {
-        setUser(JSON.parse(storedUser));
+        const storedUser = localStorage.getItem("demoUser");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          const defaultUser = {
+            name: "Shadhin Ahmed",
+            email: "shadhin@example.com",
+            avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80"
+          };
+          setUser(defaultUser);
+          localStorage.setItem("demoUser", JSON.stringify(defaultUser));
+        }
       } catch (e) {
-        console.error("Failed to parse stored user", e);
+        console.error("Failed to read/write stored user from localStorage", e);
       }
     }
   }, []);
 
   const login = (email: string) => {
-    // Demo login implementation
     const demoUser = {
-      name: "Alex Morgan",
-      email: email || "demo@example.com",
+      name: "Shadhin Ahmed",
+      email: email || "shadhin@example.com",
+      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80"
     };
     setUser(demoUser);
-    localStorage.setItem("demoUser", JSON.stringify(demoUser));
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("demoUser", JSON.stringify(demoUser));
+      } catch (e) {
+        console.warn("Could not save user to localStorage", e);
+      }
+    }
     router.push("/profile");
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("demoUser");
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("demoUser");
+      } catch (e) {
+        console.warn("Could not remove user from localStorage", e);
+      }
+    }
     router.push("/sign-in");
   };
 
-  const updateProfile = (name: string, email: string) => {
+  const updateProfile = (name: string, email: string, avatar?: string) => {
     if (!user) return;
-    const updatedUser = { ...user, name, email };
+    const updatedUser = { 
+      ...user, 
+      name, 
+      email,
+      ...(avatar ? { avatar } : {})
+    };
     setUser(updatedUser);
-    localStorage.setItem("demoUser", JSON.stringify(updatedUser));
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("demoUser", JSON.stringify(updatedUser));
+      } catch (e) {
+        console.warn("Could not persist user to localStorage", e);
+      }
+    }
   };
 
   // Prevent hydration mismatch by not rendering anything auth-dependent until mounted

@@ -1,97 +1,123 @@
+"use client";
+
 import Link from "next/link";
-import { ChevronLeft, Clock, Calendar as CalendarIcon, User, Share2 } from "lucide-react";
+import { Clock, Calendar as CalendarIcon, User, Share2 } from "lucide-react";
 import * as Icons from "lucide-react";
 import { blogs, categories } from "@/lib/data";
+import BackButton from "@/components/BackButton";
+import { use } from "react";
 
-export default async function BlogArticlePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function BlogArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const article = blogs.find(b => b.id === id) || blogs[0];
   const category = categories.find(c => c.id === article.categoryId) || categories[0];
-  const relatedArticles = blogs.filter(b => b.categoryId === category.id && b.id !== article.id).slice(0, 3);
+  const relatedArticles = blogs.filter(b => b.categoryId === category.id && b.id !== article.id);
+  const fallbackRelated = relatedArticles.length > 0 ? relatedArticles : blogs.filter(b => b.id !== article.id).slice(0, 3);
   
   // Format content for mock display
   const contentParagraphs = article.content.split('\n\n');
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      <header className="absolute top-0 z-20 w-full p-4 flex items-center justify-between">
-        <Link href="/blog" className="w-10 h-10 flex items-center justify-center bg-white/30 backdrop-blur-md text-white hover:bg-white/40 rounded-full transition-colors shadow-sm">
-          <ChevronLeft size={20} />
-        </Link>
-        <button className="w-10 h-10 flex items-center justify-center bg-white/30 backdrop-blur-md text-white hover:bg-white/40 rounded-full transition-colors shadow-sm">
-          <Share2 size={20} />
+      {/* Sticky Header without drop shadow */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-border flex items-center justify-between">
+        <BackButton fallbackHref="/blog" />
+        <span className="text-xs font-bold text-foreground truncate max-w-[180px]">{article.title}</span>
+        <button 
+          className="w-9 h-9 flex items-center justify-center bg-card border border-border/60 text-foreground hover:bg-muted rounded-xl transition-colors"
+          aria-label="Share"
+        >
+          <Share2 size={16} />
         </button>
       </header>
       
-      <div className="w-full h-[400px] relative">
-        <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
-      </div>
-      
-      <div className="px-6 -mt-32 relative z-10">
-        <div className="mb-6">
-          <Link href={`/categories/${category.id}`} className="inline-flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-full text-xs font-bold mb-4 shadow-md">
+      <div className="p-4 sm:p-5">
+        {/* Article Cover Image */}
+        <div className="w-full h-48 sm:h-64 relative rounded-2xl overflow-hidden border border-border/50 shadow-sm mb-5 bg-muted">
+          <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
+          <div className="absolute top-3 left-3 bg-blue-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
             {category.title}
-          </Link>
-          <h1 className="text-3xl font-black text-foreground mb-4 leading-tight">{article.title}</h1>
-          <p className="text-lg text-muted-foreground font-medium leading-relaxed mb-6">
+          </div>
+        </div>
+        
+        {/* Article Header Info */}
+        <div className="mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-3 leading-snug">{article.title}</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed mb-4">
             {article.excerpt}
           </p>
           
-          <div className="flex flex-wrap gap-4 text-xs font-semibold text-muted-foreground pt-6 border-t border-border">
-            <div className="flex items-center gap-1.5">
-              <User size={16} className="text-blue-500" />
+          <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold text-muted-foreground pt-3 border-t border-border/50">
+            <div className="flex items-center gap-1.5 text-foreground">
+              <User size={14} className="text-blue-500" />
               <span>{article.author}</span>
             </div>
+            <span>•</span>
             <div className="flex items-center gap-1.5">
-              <CalendarIcon size={16} className="text-purple-500" />
+              <CalendarIcon size={14} className="text-purple-500" />
               <span>{article.date}</span>
             </div>
+            <span>•</span>
             <div className="flex items-center gap-1.5">
-              <Clock size={16} className="text-emerald-500" />
+              <Clock size={14} className="text-emerald-500" />
               <span>{article.readTime}</span>
             </div>
           </div>
         </div>
         
-        <article className="mb-12 mt-8">
+        {/* Main Article Body */}
+        <article className="mb-10 text-xs sm:text-sm leading-relaxed text-foreground space-y-4 border-t border-border/40 pt-5">
           {contentParagraphs.map((para, idx) => {
             if (para.startsWith('**') && para.endsWith('**')) {
-              return <h3 key={idx} className="text-xl font-bold mt-8 mb-4 text-foreground">{para.replace(/\*\*/g, '')}</h3>;
+              return <h3 key={idx} className="text-sm sm:text-base font-bold text-foreground pt-2">{para.replace(/\*\*/g, '')}</h3>;
             } else if (para.startsWith('* **')) {
-              // basic list mock
               const items = para.split('\n');
               return (
-                <ul key={idx} className="list-disc pl-5 space-y-2 mb-6 text-foreground leading-relaxed">
+                <ul key={idx} className="list-disc pl-5 space-y-1.5 my-3 text-muted-foreground">
                   {items.map((item, i) => {
                     const text = item.replace('* ', '');
                     const boldMatch = text.match(/\*\*(.*?)\*\*/);
                     if (boldMatch) {
-                      return <li key={i}><strong>{boldMatch[1]}</strong>{text.replace(boldMatch[0], '')}</li>;
+                      return <li key={i}><strong className="text-foreground">{boldMatch[1]}</strong>{text.replace(boldMatch[0], '')}</li>;
                     }
                     return <li key={i}>{text}</li>;
                   })}
                 </ul>
               );
             }
-            return <p key={idx} className="mb-6 text-foreground leading-relaxed text-base">{para}</p>;
+            return <p key={idx} className="text-muted-foreground leading-relaxed">{para}</p>;
           })}
         </article>
 
-        {relatedArticles.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl font-bold text-foreground mb-4">Related Articles</h2>
-            <div className="flex gap-4 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:hidden pr-6 -mr-6">
-              {relatedArticles.map((blog) => (
-                <Link key={blog.id} href={`/blog/${blog.id}`} className="min-w-[240px] max-w-[240px] bg-card rounded-3xl overflow-hidden shadow-sm border border-border/40 snap-start active:scale-[0.98] transition-transform flex flex-col">
-                  <div className="h-32 w-full bg-muted relative">
-                    <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-4 flex flex-col flex-1">
-                    <h3 className="font-bold text-sm text-foreground mb-2 line-clamp-2 leading-snug">{blog.title}</h3>
-                    <div className="mt-auto flex justify-between items-center text-xs pt-2">
-                      <span className="text-blue-500 font-bold">{blog.readTime}</span>
+        {/* Sleek Related Articles Section */}
+        {fallbackRelated.length > 0 && (
+          <div className="mb-8 pt-5 border-t border-border/50">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider">Related Articles</h2>
+              <Link href="/blog" className="text-blue-500 text-xs font-bold hover:underline">View All</Link>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2 snap-x [&::-webkit-scrollbar]:hidden pr-2 -mr-2">
+              {fallbackRelated.map((blog) => (
+                <Link 
+                  key={blog.id} 
+                  href={`/blog/${blog.id}`} 
+                  className="min-w-[210px] max-w-[210px] bg-card p-3 rounded-2xl border border-border/50 hover:border-blue-500/30 snap-start active:scale-[0.99] transition-all shadow-sm flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="h-28 w-full bg-muted rounded-xl overflow-hidden relative mb-2.5 border border-border/40">
+                      <img 
+                        src={blog.image} 
+                        alt={blog.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                      />
                     </div>
+                    <h3 className="font-bold text-xs text-foreground line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
+                      {blog.title}
+                    </h3>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground pt-2 border-t border-border/40">
+                    <span className="font-semibold text-blue-500">{blog.readTime}</span>
+                    <span>{blog.date}</span>
                   </div>
                 </Link>
               ))}
@@ -99,20 +125,23 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ id
           </div>
         )}
 
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-foreground">More Categories</h2>
-            <Link href="/categories" className="text-blue-500 text-sm font-bold">See All</Link>
+        {/* Sleek More Categories Section */}
+        <div className="pt-4 border-t border-border/50">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-xs font-bold text-foreground uppercase tracking-wider">Explore Health Categories</h2>
+            <Link href="/categories" className="text-blue-500 text-xs font-bold hover:underline">See All</Link>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:hidden pr-6 -mr-6">
-            {categories.filter(c => c.id !== category.id).map((cat) => {
-              const CatIcon = (Icons as any)[cat.icon];
+          <div className="flex gap-2 overflow-x-auto pb-2 snap-x [&::-webkit-scrollbar]:hidden pr-2 -mr-2">
+            {categories.map((cat) => {
+              const CatIcon = (Icons as any)[cat.icon] || Icons.Tag;
               return (
-                <Link key={cat.id} href={`/categories/${cat.id}`} className="flex items-center gap-3 bg-card px-5 py-3 rounded-2xl shadow-sm border border-border/40 shrink-0 snap-start active:scale-95 transition-transform">
-                  <div className={cat.color.split(' ')[0] + " " + cat.color.split(' ')[1]}>
-                    <CatIcon size={20} />
-                  </div>
-                  <span className="font-bold text-sm">{cat.title}</span>
+                <Link 
+                  key={cat.id} 
+                  href={`/categories/${cat.id}`} 
+                  className="flex items-center gap-2 bg-card px-3.5 py-2 rounded-xl border border-border/60 hover:border-blue-500/30 shrink-0 snap-start active:scale-95 transition-all shadow-sm"
+                >
+                  <CatIcon size={14} className="text-blue-500" />
+                  <span className="font-semibold text-xs text-foreground">{cat.title}</span>
                 </Link>
               );
             })}

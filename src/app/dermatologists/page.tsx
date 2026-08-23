@@ -2,51 +2,74 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Search, Star, ArrowRight } from "lucide-react";
+import { ChevronLeft, Search, Star, CheckCircle2, SlidersHorizontal, CalendarPlus } from "lucide-react";
 import { doctors } from "@/lib/data";
 
 const FILTERS = ["All", "Available Today", "Dermatologist", "Oncologist", "Skin Specialist"];
 
 export default function DermatologistsPage() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredDoctors = doctors.filter((doc) => {
-    if (activeFilter === "All") return true;
-    if (activeFilter === "Available Today") return doc.availability === "Available Today";
-    return doc.specialty === activeFilter;
+    // Specialty / Availability filter
+    const matchesFilter = 
+      activeFilter === "All" ||
+      (activeFilter === "Available Today" && doc.availability === "Available Today") ||
+      doc.specialty === activeFilter;
+
+    // Search query filter
+    const matchesSearch = 
+      doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.hospital.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesFilter && matchesSearch;
   });
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md p-4 flex items-center justify-between border-b border-border">
+    <div className="min-h-screen bg-background pb-28">
+      {/* Header Bar */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/" className="w-10 h-10 flex items-center justify-center bg-muted text-foreground hover:bg-muted/80 rounded-full transition-colors">
-            <ChevronLeft size={20} />
+          <Link href="/" className="w-9 h-9 flex items-center justify-center bg-card border border-border/60 text-foreground hover:bg-muted rounded-xl transition-colors">
+            <ChevronLeft size={18} />
           </Link>
-          <h1 className="text-xl font-bold">All Dermatologists</h1>
+          <h1 className="text-sm sm:text-base font-bold text-foreground">Find Dermatologists</h1>
         </div>
       </header>
       
-      <div className="p-6">
-        <div className="relative mb-6">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+      <div className="p-4 sm:p-5">
+        {/* Compact Search Input without drop shadow */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" size={16} />
           <input 
             type="text" 
-            placeholder="Search by name or specialty..."
-            className="w-full bg-card border border-border pl-12 pr-4 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name, specialty or hospital..."
+            className="w-full bg-card border border-border/60 pl-9 pr-9 py-2.5 rounded-xl outline-none focus:border-blue-500 text-xs font-medium text-foreground transition-all placeholder:text-muted-foreground/70"
           />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground hover:text-foreground"
+            >
+              ✕
+            </button>
+          )}
         </div>
         
-        {/* Filter Tabs */}
-        <div className="flex gap-3 overflow-x-auto pb-4 mb-2 snap-x [&::-webkit-scrollbar]:hidden">
+        {/* Filter Pills */}
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-4 snap-x [&::-webkit-scrollbar]:hidden pr-2 -mr-2">
           {FILTERS.map((filter) => (
             <button 
               key={filter} 
               onClick={() => setActiveFilter(filter)}
-              className={`shrink-0 px-5 py-2.5 rounded-full text-sm font-bold snap-start transition-colors ${
+              className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold snap-start transition-all ${
                 activeFilter === filter 
-                  ? "bg-blue-600 text-white" 
-                  : "bg-card border border-border text-foreground hover:bg-muted"
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white" 
+                  : "bg-card border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
               {filter}
@@ -55,49 +78,60 @@ export default function DermatologistsPage() {
         </div>
 
         {/* Doctor Cards */}
-        <div className="flex flex-col gap-5 transition-opacity duration-300">
+        <div className="flex flex-col gap-3 transition-all duration-300">
           {filteredDoctors.length > 0 ? (
             filteredDoctors.map((doc) => (
-              <Link key={doc.id} href={`/dermatologists/${doc.id}`} className="bg-card p-5 rounded-[2rem] flex flex-col gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-border/50 active:scale-[0.98] transition-transform relative overflow-hidden">
-                <div className="flex gap-5">
-                  <div className="w-[85px] h-[85px] shrink-0 bg-muted rounded-2xl overflow-hidden relative">
+              <Link 
+                key={doc.id} 
+                href={`/dermatologists/${doc.id}`} 
+                className="bg-card p-3.5 rounded-2xl flex flex-col gap-3 shadow-sm border border-border/50 hover:border-blue-500/30 active:scale-[0.99] transition-all"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-16 h-16 shrink-0 bg-muted rounded-xl overflow-hidden relative border border-border/40 shadow-sm">
                     <img src={doc.image} alt={doc.name} className="w-full h-full object-cover object-top" />
                   </div>
-                  <div className="flex-1 flex flex-col justify-center py-0.5">
-                    <h3 className="font-bold text-lg text-foreground mb-1 leading-tight">{doc.name}</h3>
-                    <p className="text-sm text-muted-foreground font-medium mb-3">{doc.specialty}</p>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <h3 className="font-bold text-xs sm:text-sm text-foreground truncate">{doc.name}</h3>
+                      <CheckCircle2 size={13} className="text-blue-500 fill-blue-500/20 shrink-0" />
+                    </div>
+                    <p className="text-[11px] text-blue-500 font-semibold mb-1 truncate">{doc.specialty} • {doc.hospital}</p>
                     
-                    {/* Experience */}
-                    <div className="flex items-center">
-                      <span className="inline-flex items-center text-xs font-bold text-muted-foreground">
-                        {doc.experience} Experience
+                    <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-medium">
+                      <span className="flex items-center gap-1 font-bold text-amber-500">
+                        <Star size={11} className="fill-amber-400" /> {doc.rating}.0 ({doc.reviews})
                       </span>
+                      <span>•</span>
+                      <span>{doc.experience} Exp</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-border mt-1">
-                  <div className="flex items-center gap-1.5">
-                    <Star size={16} className="text-amber-400 fill-amber-400" />
-                    <span className="text-sm font-bold">{doc.rating}</span>
-                    <span className="text-xs text-muted-foreground font-medium">({doc.reviews} Reviews)</span>
-                  </div>
+                {/* Bottom Card Row */}
+                <div className="flex items-center justify-between pt-2.5 border-t border-border/40 text-[10px]">
+                  <span className={`font-semibold px-2 py-0.5 rounded-md ${
+                    doc.availability === "Available Today" 
+                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" 
+                      : "bg-muted text-muted-foreground"
+                  }`}>
+                    {doc.availability}
+                  </span>
                   
-                  {/* Lightweight View Profile Action */}
-                  <span className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-500">
-                    View Profile <ArrowRight size={16} />
+                  <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-3.5 py-1.5 rounded-xl shadow-sm inline-flex items-center gap-1">
+                    <CalendarPlus size={12} /> Book Appointment
                   </span>
                 </div>
               </Link>
             ))
           ) : (
-            <div className="text-center py-12 px-6 bg-card rounded-[2rem] border border-border/50 border-dashed">
-              <p className="text-muted-foreground font-medium">No doctors found for this filter.</p>
+            <div className="text-center py-12 px-6 bg-card rounded-2xl border border-border/50 border-dashed">
+              <p className="text-xs text-muted-foreground font-medium mb-3">No dermatologists found matching your search.</p>
               <button 
-                onClick={() => setActiveFilter("All")}
-                className="mt-4 text-sm font-bold text-blue-600"
+                onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
+                className="text-xs font-bold text-blue-600 hover:underline"
               >
-                Clear Filters
+                Reset Filters & Search
               </button>
             </div>
           )}

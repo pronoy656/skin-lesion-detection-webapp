@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Database, Trash2, AlertTriangle, ShieldCheck } from "lucide-react";
+import { ChevronLeft, Database, Trash2, AlertTriangle, ShieldCheck, Bell, HardDrive, CheckCircle2, Lock } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function AppSettingsPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [cleared, setCleared] = useState(false);
+  const [pushNotifs, setPushNotifs] = useState(true);
+  const [aiInsightsNotifs, setAiInsightsNotifs] = useState(true);
   const { isAuthenticated } = useAuth();
 
   const handleClearHistory = () => {
-    // In a real app, this would delete local DB or call API
-    // For demo, we just show a success message
     setTimeout(() => {
       setCleared(true);
       setShowConfirm(false);
@@ -22,9 +22,10 @@ export default function AppSettingsPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
-        <h1 className="text-xl font-bold mb-4">Authentication Required</h1>
-        <Link href="/sign-in" className="text-blue-600 font-bold hover:underline">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
+        <h1 className="text-base font-bold text-foreground mb-2">Authentication Required</h1>
+        <p className="text-xs text-muted-foreground mb-4">Please sign in to access app settings.</p>
+        <Link href="/sign-in" className="bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
           Go to Sign In
         </Link>
       </div>
@@ -32,43 +33,96 @@ export default function AppSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-24 relative">
-      <header className="p-4 border-b border-border bg-card sticky top-0 z-10 flex items-center">
-        <Link href="/profile" className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors">
-          <ChevronLeft size={20} /> Back
-        </Link>
-        <h1 className="text-xl font-bold ml-4">App Settings</h1>
+    <div className="min-h-screen bg-background pb-28 relative">
+      {/* Sticky Header without drop shadow */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/profile" 
+            className="w-9 h-9 flex items-center justify-center bg-card border border-border/60 text-foreground hover:bg-muted rounded-xl transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </Link>
+          <h1 className="text-sm sm:text-base font-bold text-foreground">App Settings & Storage</h1>
+        </div>
       </header>
 
-      <div className="p-6 max-w-lg mx-auto space-y-6">
+      <div className="p-4 sm:p-5 max-w-lg mx-auto space-y-5">
         
-        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 flex items-start gap-4">
-          <ShieldCheck className="text-primary mt-0.5" size={24} />
+        {/* Privacy Card */}
+        <div className="bg-card border border-blue-500/30 rounded-2xl p-4 flex items-start gap-3.5 shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+            <ShieldCheck size={18} />
+          </div>
           <div>
-            <h3 className="font-bold text-primary mb-1">Data & Privacy</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed font-medium">
-              Your detection history is stored locally on this device for your privacy. You can manage your stored data here.
+            <h3 className="font-bold text-xs text-foreground mb-0.5">Encrypted Local Storage</h3>
+            <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">
+              Your detection history is stored locally on this device using secure local encryption.
             </p>
           </div>
         </div>
 
+        {/* Notifications Settings */}
         <div className="space-y-2">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Storage</h3>
-          
-          <button 
-            onClick={() => setShowConfirm(true)}
-            className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:bg-red-50 dark:hover:bg-red-950/20 transition group"
-          >
-            <div className="flex items-center gap-3 font-medium text-foreground group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
-              <Database size={20} className="text-muted-foreground group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors" /> 
-              Clear Data History
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Notifications & Reminders</h3>
+          <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm divide-y divide-border/40">
+            <div className="flex items-center justify-between p-3.5">
+              <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                <Bell size={16} className="text-blue-500" />
+                <div>
+                  <p>Screening Reminders</p>
+                  <p className="text-[10px] text-muted-foreground font-normal">Monthly skin checkup reminders</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setPushNotifs(!pushNotifs)}
+                className={`w-9 h-5 rounded-full relative transition-colors border border-border/40 ${pushNotifs ? "bg-blue-600" : "bg-muted"}`}
+              >
+                <div className={`w-3.5 h-3.5 bg-white rounded-full transition-transform ${pushNotifs ? "translate-x-4" : "translate-x-0.5"}`} />
+              </button>
             </div>
-          </button>
+
+            <div className="flex items-center justify-between p-3.5">
+              <div className="flex items-center gap-3 text-xs font-semibold text-foreground">
+                <ShieldCheck size={16} className="text-indigo-500" />
+                <div>
+                  <p>Weekly AI Health Insights</p>
+                  <p className="text-[10px] text-muted-foreground font-normal">New research & health articles</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setAiInsightsNotifs(!aiInsightsNotifs)}
+                className={`w-9 h-5 rounded-full relative transition-colors border border-border/40 ${aiInsightsNotifs ? "bg-blue-600" : "bg-muted"}`}
+              >
+                <div className={`w-3.5 h-3.5 bg-white rounded-full transition-transform ${aiInsightsNotifs ? "translate-x-4" : "translate-x-0.5"}`} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Data & Storage Management */}
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">Storage Management</h3>
+          <div className="bg-card border border-border/60 rounded-2xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center justify-between text-xs font-semibold text-foreground">
+              <span className="flex items-center gap-2">
+                <HardDrive size={15} className="text-muted-foreground" /> Cached Local Data
+              </span>
+              <span className="text-muted-foreground font-bold">1.4 MB</span>
+            </div>
+
+            <button 
+              onClick={() => setShowConfirm(true)}
+              className="w-full flex items-center justify-center gap-2 p-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/20 rounded-xl text-xs font-bold transition-all active:scale-95"
+            >
+              <Trash2 size={14} /> Clear Local Cache & Scan History
+            </button>
+          </div>
         </div>
 
         {cleared && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-xl font-medium text-center shadow-sm animate-in fade-in slide-in-from-bottom-4">
-            Your history has been successfully cleared.
+          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 animate-in fade-in">
+            <CheckCircle2 size={16} /> Local history & cache cleared successfully.
           </div>
         )}
       </div>
@@ -76,26 +130,28 @@ export default function AppSettingsPage() {
       {/* Confirmation Modal */}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-card w-full max-w-sm rounded-[2rem] p-6 shadow-2xl border border-border animate-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <AlertTriangle size={32} strokeWidth={2.5} />
+          <div className="bg-card w-full max-w-sm rounded-2xl p-5 shadow-xl border border-border animate-in zoom-in-95 duration-200 text-center space-y-4">
+            <div className="w-12 h-12 bg-red-500/10 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center mx-auto border border-red-500/20">
+              <AlertTriangle size={24} strokeWidth={2.2} />
             </div>
-            <h2 className="text-2xl font-black text-center mb-2">Clear Data History?</h2>
-            <p className="text-center text-muted-foreground font-medium mb-8">
-              This will permanently remove your saved detection history from this device and account. This action cannot be undone.
-            </p>
-            <div className="flex flex-col gap-3">
-              <button 
-                onClick={handleClearHistory}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-[1.25rem] shadow-[0_4px_14px_rgba(220,38,38,0.2)] active:scale-[0.98] transition-all"
-              >
-                Yes, Clear History
-              </button>
+            <div>
+              <h2 className="text-base font-bold text-foreground">Clear Scan History?</h2>
+              <p className="text-xs text-muted-foreground font-medium mt-1 leading-relaxed">
+                This will permanently delete saved detection logs and cache from this device.
+              </p>
+            </div>
+            <div className="flex gap-2.5 pt-2">
               <button 
                 onClick={() => setShowConfirm(false)}
-                className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold py-4 rounded-[1.25rem] active:scale-[0.98] transition-all"
+                className="flex-1 bg-muted hover:bg-muted/80 text-foreground font-bold text-xs py-2.5 rounded-xl active:scale-95 transition-all"
               >
                 Cancel
+              </button>
+              <button 
+                onClick={handleClearHistory}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-sm active:scale-95 transition-all"
+              >
+                Clear Data
               </button>
             </div>
           </div>

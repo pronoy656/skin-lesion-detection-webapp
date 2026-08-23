@@ -6,42 +6,42 @@ export const categories = [
     title: "Mole Check",
     description: "Analyze moles for irregular borders, asymmetry, and color variations.",
     icon: "Search", 
-    color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+    color: "text-blue-500 dark:text-blue-400"
   },
   {
     id: "skin-lesion",
     title: "Skin Lesion",
     description: "Identify and track changes in various skin lesions and spots over time.",
     icon: "HeartPulse",
-    color: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+    color: "text-red-500 dark:text-red-400"
   },
   {
     id: "full-body",
     title: "Full Body Map",
     description: "Comprehensive scanning of all body areas for early detection.",
     icon: "Brain",
-    color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400"
+    color: "text-purple-500 dark:text-purple-400"
   },
   {
     id: "prevention",
     title: "Prevention",
     description: "Daily care routines and sun protection to maintain skin health.",
     icon: "ShieldCheck",
-    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400"
+    color: "text-emerald-500 dark:text-emerald-400"
   },
   {
     id: "dermatology",
     title: "Dermatology",
     description: "Professional medical advice and treatment options.",
     icon: "Syringe",
-    color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"
+    color: "text-orange-500 dark:text-orange-400"
   },
   {
     id: "ai-analysis",
     title: "AI Analysis",
     description: "How our artificial intelligence models detect skin abnormalities.",
     icon: "Zap",
-    color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400"
+    color: "text-amber-500 dark:text-amber-400"
   }
 ];
 
@@ -55,7 +55,7 @@ export const doctors = [
     reviews: 365,
     experience: "12+ Years",
     patients: "4.5k+",
-    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=95",
     bio: "Dr. Alexa Nova is a board-certified dermatologist specializing in early skin cancer detection and dermoscopy. She leads the clinical integration of AI tools for preventative care.",
     qualifications: ["MD, Harvard Medical School", "Fellow of the American Academy of Dermatology"],
     expertise: ["Melanoma Screening", "Acne Treatment", "Laser Therapy"],
@@ -70,7 +70,7 @@ export const doctors = [
     reviews: 147,
     experience: "8 Years",
     patients: "2.1k+",
-    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=95",
     bio: "Dr. Segara focuses on treating chronic skin conditions including eczema, psoriasis, and vitiligo. He takes a holistic approach to patient care.",
     qualifications: ["MBBS, University of London", "MSc Dermatology"],
     expertise: ["Chronic Conditions", "Pediatric Dermatology"],
@@ -85,7 +85,7 @@ export const doctors = [
     reviews: 89,
     experience: "15 Years",
     patients: "8k+",
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=95",
     bio: "Specializing in surgical oncology, Dr. Chen performs advanced excisions of malignant skin lesions and coordinates complex treatment plans.",
     qualifications: ["MD, Stanford University", "Surgical Oncology Fellowship"],
     expertise: ["Mohs Surgery", "Melanoma Treatment", "Skin Grafts"],
@@ -159,5 +159,56 @@ export const blogs = [
     readTime: "6 min read",
     date: "Jul 15, 2026",
     author: "Dr. Alexa Nova"
+  }
+];
+
+export const historyRecords = [
+  {
+    id: "scan-001",
+    date: "Aug 09, 2026",
+    status: "Potential Lesion",
+    confidence: 94,
+    isPositive: true,
+    location: "Upper Back",
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=85",
+    notes: "Irregular border mole on upper back",
+    abcd: { asymmetry: "Asymmetrical", border: "Irregular / Notched", color: "Multi-tonal Brown", diameter: "5.4 mm" },
+    recommendation: "High confidence potential lesion detected. We recommend booking an appointment with a dermatologist for a clinical dermoscopy exam."
+  },
+  {
+    id: "scan-002",
+    date: "Aug 02, 2026",
+    status: "No Lesion Detected",
+    confidence: 98,
+    isPositive: false,
+    location: "Left Forearm",
+    image: "https://images.unsplash.com/photo-1576426863848-c21f53c60b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=85",
+    notes: "Benign skin spot on left forearm",
+    abcd: { asymmetry: "Symmetrical", border: "Smooth & Well-Defined", color: "Uniform Light Brown", diameter: "2.1 mm" },
+    recommendation: "No suspicious visual features detected. Continue monthly routine self-examinations."
+  },
+  {
+    id: "scan-003",
+    date: "Jul 15, 2026",
+    status: "Low Confidence",
+    confidence: 62,
+    isPositive: null,
+    location: "Right Shoulder",
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=85",
+    notes: "Shadowing on right shoulder patch",
+    abcd: { asymmetry: "Inconclusive", border: "Shadowed", color: "Low Contrast", diameter: "3.5 mm" },
+    recommendation: "Lighting or photo resolution was insufficient. Please retake the photo under clear daylight."
+  },
+  {
+    id: "scan-004",
+    date: "Jun 28, 2026",
+    status: "Potential Lesion",
+    confidence: 85,
+    isPositive: true,
+    location: "Lower Abdomen",
+    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=85",
+    notes: "Pigmented macule on lower abdomen",
+    abcd: { asymmetry: "Moderate", border: "Slightly Irregular", color: "Dual Tone", diameter: "4.8 mm" },
+    recommendation: "Moderate risk indication. Recommended for annual dermatologist review."
   }
 ];

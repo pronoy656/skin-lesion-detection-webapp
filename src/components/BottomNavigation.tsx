@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Search, MessageSquare, User, Scan } from "lucide-react";
+import { Home, Search, User, ScanLine, Stethoscope } from "lucide-react";
 import { useUI } from "@/context/UIContext";
 
 export default function BottomNavigation() {
@@ -21,32 +21,65 @@ export default function BottomNavigation() {
   };
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-md bg-white dark:bg-card border-t border-gray-100 dark:border-border/50 pb-safe">
-      <nav className="flex justify-between items-center h-[72px] px-8">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm">
+      {/* Theme Adaptive Navbar Capsule */}
+      <nav className="bg-card/95 backdrop-blur-xl border border-border shadow-[0_10px_28px_rgba(0,0,0,0.08)] rounded-full px-3 py-1.5 flex justify-around items-center h-16">
         
-        <Link href="/" className={`flex flex-col items-center justify-center p-2 transition-colors ${pathname === "/" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"}`}>
-          <Home size={24} strokeWidth={pathname === "/" ? 2.5 : 2} />
+        <Link 
+          href="/" 
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+            pathname === "/" 
+              ? "bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400" 
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+          aria-label="Home"
+        >
+          <Home size={20} strokeWidth={pathname === "/" ? 2.5 : 2} />
         </Link>
         
-        <Link href="/search" className={`flex flex-col items-center justify-center p-2 transition-colors ${pathname === "/search" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"}`}>
-          <Search size={24} strokeWidth={pathname === "/search" ? 2.5 : 2} />
+        <Link 
+          href="/search" 
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+            pathname === "/search" 
+              ? "bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400" 
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+          aria-label="Search"
+        >
+          <Search size={20} strokeWidth={pathname === "/search" ? 2.5 : 2} />
         </Link>
 
-        {/* Center Scan Action - Flat and Prominent */}
+        {/* Clean Center Scanner Action Button */}
         <button 
           onClick={handleScanClick}
-          className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full shadow-[0_4px_12px_rgba(59,130,246,0.4)] active:scale-95 transition-transform"
-          aria-label="Scan Image"
+          className="flex items-center justify-center w-12 h-12 -mt-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-500/30 ring-4 ring-background active:scale-95 transition-all"
+          aria-label="Scan Skin"
         >
-          <Scan size={26} strokeWidth={2.5} />
+          <ScanLine size={22} strokeWidth={2} />
         </button>
         
-        <Link href="/history" className={`flex flex-col items-center justify-center p-2 transition-colors ${pathname === "/history" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"}`}>
-          <MessageSquare size={24} strokeWidth={pathname === "/history" ? 2.5 : 2} />
+        <Link 
+          href="/dermatologists" 
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+            pathname.startsWith("/dermatologists") 
+              ? "bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400" 
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+          aria-label="Find Doctors"
+        >
+          <Stethoscope size={20} strokeWidth={pathname.startsWith("/dermatologists") ? 2.5 : 2} />
         </Link>
         
-        <Link href="/profile" className={`flex flex-col items-center justify-center p-2 transition-colors ${pathname === "/profile" ? "text-blue-500" : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"}`}>
-          <User size={24} strokeWidth={pathname === "/profile" ? 2.5 : 2} />
+        <Link 
+          href="/profile" 
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+            pathname === "/profile" 
+              ? "bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400" 
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+          aria-label="Profile"
+        >
+          <User size={20} strokeWidth={pathname === "/profile" ? 2.5 : 2} />
         </Link>
 
       </nav>
